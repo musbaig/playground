@@ -1,0 +1,94 @@
+h2 {
+    font-family: Arial, serif;
+}
+
+form {
+    display: inline-block;
+}
+
+#button {
+    display: inline-block;
+    height: 20px;
+    width: 70px;
+    background-color: #cc0000;
+    font-family: Arial,serif;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.list {
+    font-family: Garamond, serif;
+    color: #cc0000;
+}
+
+#square {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #FF0000;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+img {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+h2 {
+    color: #444444;
+    font-family: 'Oswald', Arial, serif;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 36px;
+    margin: 0 auto 10px;
+    padding: 0;
+    text-decoration: none;
+    text-align: center;
+}
+
+#genetic {
+    border: 1px solid #DDDDDD;
+    font-family: Verdana, "Times New Roman", serif;
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: normal;
+    width: 700px;
+    padding: 1px;
+}
+
+.aligncenter {
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.control-container {
+    margin-left: 175px;
+    margin-top: 10px;
+}
+
+.control-container div {
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.control {
+    display: inline-block;
+    margin-bottom: 15px;
+    vertical-align: top;
+}
+
+button {
+    width: 100px;
+    height: 25px;
+    font-size: 9pt;
+}
+
+.target .mutation_prob .results {
+    font-size: 0.8em;
+}
