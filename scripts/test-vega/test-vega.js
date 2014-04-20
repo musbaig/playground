@@ -1,25 +1,29 @@
 'use strict';
 
-var m = mori();
+var m = mori;
 
-var generateAverages = function () {
-    var arr = _.times(50, _.partial(_.random, 0, 100));
-    var sum = _.reduce(arr, function (sum, num) {
+function generateAverages() {
+    var arr = m.repeatedly(50, m.partial(_.random, 0, 100));
+    var sum = m.reduce(function (sum, num) {
         return sum + num;
-    });
-    return sum / _.size(arr);
-};
+    }, arr);
+    return sum / m.count(arr);
+}
 
-var avgArr = _.times(15, generateAverages);
+var avgArr = m.repeatedly(15, generateAverages);
 
-var data_map = _.groupBy(avgArr, function (num) {
-    return Math.round(num / 5) * 5;
-});
+function binSize(num) {
+  return Math.round(num / 5) * 5;
+}
 
-var data = _.map(_.keys(data_map), function (key) {
-    return {"x": key,
-            "y": data_map[key].length};
-});
+var grouped_data = m.group_by(binSize, avgArr);
+
+function data_map(key) {
+  return {"x": key,
+          "y": m.into_array(m.get(grouped_data, key)).length};
+}
+
+var data = m.into_array(m.map(data_map, m.keys(grouped_data)));
 
 var genSpec = function() {
     var spec =
