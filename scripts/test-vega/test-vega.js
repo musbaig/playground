@@ -28,9 +28,9 @@ var data = mori.into_array(mori.map(data_map, mori.keys(grouped_data)));
 var genSpec = function() {
     var spec =
     {
-        "width": 400,
-        "height": 200,
-        "padding": {"top": 10, "left": 45, "bottom": 30, "right": 10},
+        "width": 450,
+        "height": 250,
+        "padding": {"top": 10, "left": 45, "bottom": 45, "right": 10},
         "data": [
             {
                 "name": "table",
@@ -52,8 +52,13 @@ var genSpec = function() {
             }
         ],
         "axes": [
-            {"type": "x", "scale": "x"},
-            {"type": "y", "scale": "y", "offset": 5}
+            {"type": "x",
+             "scale": "x",
+             "title": "Average"},
+            {"type": "y",
+             "scale": "y",
+             "title": "Frequency",
+             "offset": 5}
         ],
         "marks": [
             {
@@ -77,4 +82,4 @@ var genSpec = function() {
         ]
     };
     return spec;
-}
+};
