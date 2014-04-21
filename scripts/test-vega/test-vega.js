@@ -1,29 +1,29 @@
 'use strict';
 
-var m = mori;
+var mori = mori;
 
 function generateAverages() {
-    var arr = m.repeatedly(50, m.partial(_.random, 0, 100));
-    var sum = m.reduce(function (sum, num) {
+    var arr = mori.repeatedly(50, mori.partial(_.random, 0, 100));
+    var sum = mori.reduce(function (sum, num) {
         return sum + num;
     }, arr);
-    return sum / m.count(arr);
+    return sum / mori.count(arr);
 }
 
-var avgArr = m.repeatedly(15, generateAverages);
+var avgArr = mori.repeatedly(75, generateAverages);
 
 function binSize(num) {
-  return Math.round(num / 5) * 5;
+  return Math.round(num / 2) * 2;
 }
 
-var grouped_data = m.group_by(binSize, avgArr);
+var grouped_data = mori.group_by(binSize, avgArr);
 
 function data_map(key) {
   return {"x": key,
-          "y": m.into_array(m.get(grouped_data, key)).length};
+          "y": mori.into_array(mori.get(grouped_data, key)).length};
 }
 
-var data = m.into_array(m.map(data_map, m.keys(grouped_data)));
+var data = mori.into_array(mori.map(data_map, mori.keys(grouped_data)));
 
 var genSpec = function() {
     var spec =
