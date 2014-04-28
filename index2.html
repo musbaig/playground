@@ -1,26 +1,61 @@
 <html lang="en">
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="">
-    <title>
-        Vega Test
-    </title>
-    <script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
-    <script type="text/javascript" src="scripts/libs/mori.js"></script>
-    <script type="text/javascript" src="bower_components/vega/vega.min.js"></script>
-    <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
-    <script type="text/javascript" src="scripts/test-vega/test-vega.js"></script>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="">
+  <title>
+    Vega Test
+  </title>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
+  <script type="text/javascript" src="scripts/libs/mori.js"></script>
+  <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+  <script type="text/javascript" src="scripts/libs/pourover.js"></script>
+  <script type="text/javascript" src="bower_components/vega/vega.min.js"></script>
+  <script type="text/javascript" src="scripts/test_vega/test_clt_mori.js"></script>
+  <script type="text/javascript" src="scripts/trie.js"></script>
 </head>
 <body>
+<p>Central Limit Theorem</p>
 <script type="text/javascript">
-    var $body = d3.select("body");
-    $body.append("div").attr("id", "viz");
-    var parse = function (spec) {
-        vg.parse.spec(spec, function (chart) {
-            chart({el: "#viz"}).renderer("svg").update();
-        });
-    };
-    parse(genSpec());
+  var $body = d3.select("body");
+  $body.append("div").attr("id", "viz");
+  var parse = function(spec) {
+    vg.parse.spec(spec, function(chart) {
+      chart({el: "#viz"}).renderer("svg").update();
+    });
+  };
+  parse(genSpec());
+
+//  $("#viz").after($("<p>" + JSON.stringify(generateTrie(['foo', 'bar', 'bars'])) + "</p>"));
+  var test_trie = new Trie();
+  test_trie.multi_insert(['foo', 'bar', 'bars']);
+  $("#viz").after($("<div><pre>" + JSON.stringify(test_trie.root, null, 2) + "</pre></div>"));
+
+  var data = [
+              {
+                bot_metric: "eppm",
+                ri: "hu9vq21ty1f0e7ximx",
+                bot_algo: "epsgreed",
+                bot_act: "explore"
+              },
+              {
+                bot_metric: "eppm",
+                ri: "hu9vqaku6clx4tb7r8",
+                bot_algo: "epsgreed",
+                bot_act: "exploit"
+              },
+              {
+                bot_metric: "eppm",
+                ri: "hu9vlxdq19c3kpce9m",
+                bot_algo: "epsgreed",
+                bot_act: "exploit"
+              }
+          ],
+          collection,
+          bot_act_filter;
+  collection = new PourOver.Collection(data);
+  bot_act_filter = PourOver.makeExactFilter("bot_act", ["exploit"]);
+  collection.addFilters(bot_act_filter);
 </script>
 </body>
 </html>
