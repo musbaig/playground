@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
+  <script type="text/javascript" src="bower_components/vega/vega.min.js"></script>
+  <style>
+    #oval {
+      width: 200px;
+      height: 100px;
+      background: blue;
+      -moz-border-radius: 100px/50px;
+      -webkit-border-radius: 100px/50px;
+      border-radius: 100px/50px;
+    }
+  </style>
+</head>
+<body>
+  <div id="oval"></div>
+  <script>
+    var $body = d3.select("body");
+    $body.append("div").attr("id", "viz");
+    var parse = function(spec) {
+      vg.parse.spec(spec, function(chart) {
+        chart({el: "#viz"}).renderer("svg").update();
+      });
+    };
+    var vg_spec_old = {
+      "width": 500,
+      "height": 200,
+      "data": [
+        {
+          "name": "revenue",
+          "url": "data/revenue.csv",
+          "format": {"type": "csv", "parse": {"price":"number", "date":"date"}}
+        }
+      ],
+      "scales": [
+        {
+          "name": "x",
+          "type": "ordinal",
+          "range": "width",
+          "domain": {"data": "revenue", "field": "data.date"}
+        },
+        {
+          "name": "y",
+          "type": "linear",
+          "range": "height",
+          "nice": true,
+          "domain": {"data": "revenue", "field": "data.price"}
+        },
+        {
+          "name": "color", "type": "ordinal", "range": "category10"
+        }
+      ],
+      "axes": [
+        {"type": "x", "scale": "x", "tickSizeEnd": 0},
+        {"type": "y", "scale": "y"}
+      ],
+      "marks": [
+        {
+          "type": "group",
+          "from": {
+            "data": "stocks",
+            "transform": [{"type": "facet", "keys": ["data.symbol"]}]
+          },
+          "marks": [
+            {
+              "type": "line",
+              "properties": {
+                "enter": {
+                  "x": {"scale": "x", "field": "data.date"},
+                  "y": {"scale": "y", "field": "data.price"},
+                  "stroke": {"scale": "color", "field": "data.symbol"},
+                  "strokeWidth": {"value": 2}
+                }
+              }
+            },
+            {
+              "type": "text",
+              "from": {
+                "transform": [{"type": "filter", "test": "index==data.length-1"}]
+              },
+              "properties": {
+                "enter": {
+                  "x": {"scale": "x", "field": "data.date", "offset": 2},
+                  "y": {"scale": "y", "field": "data.price"},
+                  "fill": {"scale": "color", "field": "data.symbol"},
+                  "text": {"field": "data.symbol"},
+                  "baseline": {"value": "middle"}
+                }
+              }
+            }
+          ]
+        }
+      ]
+    };
+    var vg_spec = {
+      "scales": [
+        {
+          "domain": {
+            "data": "forecast data",
+            "field": "data.x"
+          },
+          "name": "x",
+          "points": true,
+          "range": "width",
+          "type": null
+        },
+        {
+          "nice": true,
+          "domain": {
+            "data": "forecast data",
+            "field": "data.y"
+          },
+          "name": "y",
+          "range": "height",
+          "type": "linear"
+        },
+        {
+          "name": "color",
+          "range": "category10",
+          "type": "ordinal"
+        }
+      ],
+      "marks": [
+        {
+          "type": "group",
+          "from": {
+            "data": "forecast data",
+            "transform": [
+              {
+                "type": "facet",
+                "keys": [
+                  "data.name"
+                ]
+              }
+            ]
+          },
+          "marks": [
+            {
+              "type": "line",
+              "properties": {
+                "enter": {
+                  "strokewidth": {
+                    "value": 2
+                  },
+                  "stroke": {
+                    "field": "data.name",
+                    "scale": "color"
+                  },
+                  "y": {
+                    "field": "data.y",
+                    "scale": "y"
+                  },
+                  "x": {
+                    "field": "data.x",
+                    "scale": "x"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "offset": 5,
+          "title": "x axis",
+          "type": "x",
+          "format": null,
+          "scale": "x"
+        },
+        {
+          "offset": 5,
+          "titleOffset": 50,
+          "title": "y axis",
+          "type": "y",
+          "format": null,
+          "scale": "y"
+        }
+      ],
+      "data": [
+        {
+          "name": "forecast data",
+          "values": [
+            {
+              "x": 0,
+              "y": 41.7,
+              "name": "data"
+            },
+            {
+              "x": 1,
+              "y": 24.0,
+              "name": "data"
+            },
+            {
+              "x": 2,
+              "y": 32.3,
+              "name": "data"
+            },
+            {
+              "x": 3,
+              "y": 37.3,
+              "name": "data"
+            },
+            {
+              "x": 4,
+              "y": 46.2,
+              "name": "data"
+            },
+            {
+              "x": 5,
+              "y": 29.3,
+              "name": "data"
+            },
+            {
+              "x": 6,
+              "y": 36.5,
+              "name": "data"
+            },
+            {
+              "x": 7,
+              "y": 43.0,
+              "name": "data"
+            },
+            {
+              "x": 8,
+              "y": 48.9,
+              "name": "data"
+            },
+            {
+              "x": 9,
+              "y": 31.2,
+              "name": "data"
+            },
+            {
+              "x": 10,
+              "y": 37.7,
+              "name": "data"
+            },
+            {
+              "x": 11,
+              "y": 40.4,
+              "name": "data"
+            },
+            {
+              "x": 12,
+              "y": 51.2,
+              "name": "data"
+            },
+            {
+              "x": 13,
+              "y": 31.9,
+              "name": "data"
+            },
+            {
+              "x": 14,
+              "y": 41.0,
+              "name": "data"
+            },
+            {
+              "x": 15,
+              "y": 43.8,
+              "name": "data"
+            },
+            {
+              "x": 16,
+              "y": 55.6,
+              "name": "data"
+            },
+            {
+              "x": 17,
+              "y": 33.9,
+              "name": "data"
+            },
+            {
+              "x": 18,
+              "y": 42.1,
+              "name": "data"
+            },
+            {
+              "x": 19,
+              "y": 45.6,
+              "name": "data"
+            },
+            {
+              "x": 20,
+              "y": 59.8,
+              "name": "data"
+            },
+            {
+              "x": 21,
+              "y": 35.2,
+              "name": "data"
+            },
+            {
+              "x": 22,
+              "y": 44.3,
+              "name": "data"
+            },
+            {
+              "x": 23,
+              "y": 47.9,
+              "name": "data"
+            },
+            {
+              "x": 0,
+              "y": 43.004091612920604,
+              "name": "forecasts"
+            },
+            {
+              "x": 1,
+              "y": 24.38268565383658,
+              "name": "forecasts"
+            },
+            {
+              "x": 2,
+              "y": 32.609457036816195,
+              "name": "forecasts"
+            },
+            {
+              "x": 3,
+              "y": 37.93744225814007,
+              "name": "forecasts"
+            },
+            {
+              "x": 4,
+              "y": 47.41392312739937,
+              "name": "forecasts"
+            },
+            {
+              "x": 5,
+              "y": 30.2825953225354,
+              "name": "forecasts"
+            },
+            {
+              "x": 6,
+              "y": 37.55092467635864,
+              "name": "forecasts"
+            },
+            {
+              "x": 7,
+              "y": 44.04053997726309,
+              "name": "forecasts"
+            },
+            {
+              "x": 8,
+              "y": 49.92032261700378,
+              "name": "forecasts"
+            },
+            {
+              "x": 9,
+              "y": 31.799882102303194,
+              "name": "forecasts"
+            },
+            {
+              "x": 10,
+              "y": 38.23792365930591,
+              "name": "forecasts"
+            },
+            {
+              "x": 11,
+              "y": 40.33812300016852,
+              "name": "forecasts"
+            },
+            {
+              "x": 12,
+              "y": 51.31825791977009,
+              "name": "forecasts"
+            },
+            {
+              "x": 13,
+              "y": 32.34941381860498,
+              "name": "forecasts"
+            },
+            {
+              "x": 14,
+              "y": 41.780861915195445,
+              "name": "forecasts"
+            },
+            {
+              "x": 15,
+              "y": 44.37089133574706,
+              "name": "forecasts"
+            },
+            {
+              "x": 16,
+              "y": 56.26938143321972,
+              "name": "forecasts"
+            },
+            {
+              "x": 17,
+              "y": 34.465633738019065,
+              "name": "forecasts"
+            },
+            {
+              "x": 18,
+              "y": 42.69876601957208,
+              "name": "forecasts"
+            },
+            {
+              "x": 19,
+              "y": 45.92919826205611,
+              "name": "forecasts"
+            },
+            {
+              "x": 20,
+              "y": 60.524217713983454,
+              "name": "forecasts"
+            },
+            {
+              "x": 21,
+              "y": 35.770219857902724,
+              "name": "forecasts"
+            },
+            {
+              "x": 22,
+              "y": 44.873351366654454,
+              "name": "forecasts"
+            },
+            {
+              "x": 23,
+              "y": 48.279592260456894,
+              "name": "forecasts"
+            },
+            {
+              "x": 24,
+              "y": 59.579546278620285,
+              "name": "forecasts"
+            },
+            {
+              "x": 25,
+              "y": 35.43154196555864,
+              "name": "forecasts"
+            },
+            {
+              "x": 26,
+              "y": 44.351050406447364,
+              "name": "forecasts"
+            },
+            {
+              "x": 27,
+              "y": 48.92335307904717,
+              "name": "forecasts"
+            }
+          ]
+        }
+      ],
+      "legends": [
+        {
+          "fill": "color",
+          "title": null,
+          "offset": 0,
+          "properties": {
+            "symbols": {
+              "fillOpacity": {
+                "value": 0.5
+              },
+              "stroke": {
+                "value": "transparent"
+              }
+            }
+          }
+        }
+      ],
+      "width": 400,
+      "height": 200
+    };
+    parse(vg_spec);
+
+  </script>
+</body>
+</html>

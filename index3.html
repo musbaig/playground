@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Canvas Target Practice</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var canvas = $('#myCanvas')[0];
+      var ctxt = canvas.getContext('2d');
+      ctxt.beginPath();
+      ctxt.moveTo(100, 150);
+      ctxt.lineTo(450, 50);
+      ctxt.stroke();
+    });
+  </script>
+</head>
+<body>
+  <canvas id="myCanvas" width="578" height="200"></canvas>
+</body>
+</html>
