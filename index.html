@@ -1,33 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" charset="utf-8">
-    <title>Basic Genetic Algorithm</title>
+  <meta http-equiv="Content-Type" charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>Sandbox for Algorithmic Explorations</title>
 
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/rickshaw/rickshaw.css">
-    <link rel="stylesheet" type="text/css" href="styles/css/stylesheet.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="styles/css/stylesheet.css">
+  <link rel="stylesheet" type="text/css" href="styles/css/dashboard.css">
 </head>
-<body ng-app="genomics">
 
-    <div ng-view></div>
+<!-- angular app -->
+<body ng-app="playground">
 
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="bower_components/d3/d3.min.js"></script>
-    <script src="bower_components/moment/min/moment.min.js"></script>
-    <script src="bower_components/crossfilter/crossfilter.min.js"></script>
-    <script src="bower_components/sparkline/dist/jquery.sparkline.min.js"></script>
-    <script src="bower_components/rickshaw/rickshaw.min.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <script src="bower_components/mori/"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">My digital playground</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
+      </div>
+    </div>
+  </div>
 
-    <script src="scripts/app.js"></script>
+  <!-- navigation -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 well sidebar">
+        <!--<ul id="toc" class="nav nav-pills">-->
+        <ul id="toc" ng-controller="navCtrl" class="nav nav-pills">
+          <li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>
+          <li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>
+          <li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>
+        </ul>
+      </div>
+      <div ng-view class="col-md-10 col-md-offset-2 main"></div>
+    </div>
+  </div>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!--<script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>-->
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <script src="bower_components/d3/d3.min.js"></script>
+  <!--<script src="bower_components/moment/min/moment.min.js"></script>-->
+  <!--<script src="bower_components/crossfilter/crossfilter.min.js"></script>-->
+  <!--<script src="bower_components/sparkline/dist/jquery.sparkline.min.js"></script>-->
+  <!--<script src="bower_components/json3/lib/json3.min.js"></script>-->
+  <!--<script src="scripts/libs/mori.js/"></script>-->
+  <!--<script src="bower_components/json3/lib/json3.min.js"></script>-->
+
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers.js"></script>
+
 </body>
 </html>

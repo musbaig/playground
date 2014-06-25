@@ -42,10 +42,19 @@ Trie.prototype.insert = function(word) {
 };
 
 Trie.prototype.multi_insert = function(words) {
+  var T = this;
   words.map(function(word, indx, arr) {
-    this.insert(word);
-  }, this);
+    T.insert(word);
+  }, T);
 };
 
 Trie.prototype.hasWord = function(word) {
+};
+
+Trie.prototype.autocomplete = function(prefix) {
+  if(!prefix && prefix.length == 0) {
+    return [];
+  }
+  var trie = this.root,
+      prefix_arr = prefix.split("");
 };

@@ -10,7 +10,7 @@ function generateAverages() {
     return sum / mori.count(arr);
 }
 
-var avgArr = mori.repeatedly(75, generateAverages);
+var avgArr = mori.repeatedly(175, generateAverages);
 
 function binSize(num) {
   return Math.round(num / 2) * 2;
@@ -23,7 +23,14 @@ function data_map(key) {
           "y": mori.into_array(mori.get(grouped_data, key)).length};
 }
 
-var data = mori.into_array(mori.map(data_map, mori.keys(grouped_data)));
+function data() {
+  var start = new Date().getTime();
+  var ret = mori.into_array(mori.map(data_map, mori.keys(grouped_data)));
+  var end = new Date().getTime();
+  var elapsed = end - start;
+  console.log("Execution time: " + elapsed);
+  return ret;
+};
 
 var genSpec = function() {
     var spec =
@@ -34,7 +41,7 @@ var genSpec = function() {
         "data": [
             {
                 "name": "table",
-                "values": data
+                "values": data()
             }
         ],
         "scales": [
