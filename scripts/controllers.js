@@ -12,11 +12,19 @@ playgroundControllers.controller('navCtrl', ['$scope', '$location', function($sc
 playgroundControllers.controller('GeneticAlgorithmCtrl', ['$scope', function($scope) {
   $scope.greet = "Genes baby!!";
 
-  $scope.play = function() {
-    alert($scope.target);
+  var target = "",
+      mutation_prob = 0;
+
+  $scope.playGA = function() {
+    target = this.target;
+    mutation_prob = this.mutation_prob;
+    if(target && mutation_prob) {
+      $scope.target = $scope.mutation_prob = "";
+    }
+    alert(target);
   };
 
-  $scope.reset = function() {
+  $scope.resetParams = function() {
     $scope.target = $scope.mutation_prob = "";
   };
 }]);

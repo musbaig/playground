@@ -1,28 +1,29 @@
 <h4 class="page-header">Basic Genetic Algorithm Demo</h4>
 
-<form class="form-horizonal" role="form">
+<form name="gaForm" class="form-horizonal" role="form">
 
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': gaForm.phrase.$invalid && gaForm.phrase.$dirty}">
     <label for="target" class="col-md-2 control-label">Target Phrase</label>
     <div class="col-md-4">
-      <input id="target" type="text" class="form-control" placeholder="METHINKS IT IS LIKE A WEASEL"
-             maxlength="100" size="30" ng-model="target"/>
+      <input id="target" type="text" name="phrase" class="form-control" placeholder="METHINKS IT IS LIKE A WEASEL"
+             maxlength="100" size="30" ng-model="target" required>
     </div>
+    <!--<span ng-show="gaForm.phrase.$error.required" class="help-inline">Required</span>-->
     <div class="clearfix"></div>
   </div>
 
   <div class="form-group">
     <label for="mutation" class="col-md-2 control-label">Mutation Probability (%)</label>
     <div class="col-md-1">
-      <input id="mutation" type="text" class="form-control" placeholder="10"
-             maxlength="3" size="3" ng-model="mutation_prob"/>
+      <input id="mutation" type="number" class="form-control" placeholder="10"
+             maxlength="3" size="3" ng-model="mutation_prob" />
     </div>
   </div>
 
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-      <button ng-click="play()" class="btn btn-default"><strong>Play</strong></button>
-      <button ng-click="reset()" class="btn btn-default"><strong>Reset</strong></button>
+      <button ng-click="playGA()" class="btn btn-default"><strong>Play</strong></button>
+      <button ng-click="resetParams()" class="btn btn-default"><strong>Reset</strong></button>
     </div>
   </div>
 
