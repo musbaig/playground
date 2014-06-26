@@ -7,8 +7,8 @@
 
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
-  <link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="styles/css/stylesheet.css">
+  <!--<link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/base/jquery-ui.css">-->
+  <!--<link rel="stylesheet" type="text/css" href="styles/css/stylesheet.css">-->
   <link rel="stylesheet" type="text/css" href="styles/css/dashboard.css">
 </head>
 
@@ -40,8 +40,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2 well sidebar">
-        <!--<ul id="toc" class="nav nav-pills">-->
-        <ul id="toc" ng-controller="navCtrl" class="nav nav-pills">
+        <ul ng-controller="navCtrl" class="nav nav-pills">
           <li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>
           <li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>
           <li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>

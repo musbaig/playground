@@ -1,19 +1,29 @@
-<div id="genetic" class="aligncenter">
-  <h2>Basic Genetic Algorithm Demo</h2>
-  <div class="control-container">
-      <div class="control">
-          <button id="play" type="button"><strong>Play</strong></button>
-          <button id="reset" type="button"><strong>Reset</strong></button>
-          <div class="target">
-              Target:
-              <input value="METHINKS IT IS LIKE A WEASEL" maxlength="100" size="30" ng-model="target">
-          </div>
-          <div class="mutation_prob">
-              Mutation Probability:
-              <input value="10" maxlength="3" size="3" ng-model="mutation-prob">
-              <span>%</span>
-          </div>
-          <div class="results"></div>
-      </div>
+<h4 class="page-header">Basic Genetic Algorithm Demo</h4>
+
+<form class="form-horizonal" role="form">
+
+  <div class="form-group">
+    <label for="target" class="col-md-2 control-label">Target Phrase</label>
+    <div class="col-md-4">
+      <input id="target" type="text" class="form-control" placeholder="METHINKS IT IS LIKE A WEASEL"
+             maxlength="100" size="30" ng-model="target"/>
+    </div>
+    <div class="clearfix"></div>
   </div>
-</div>
+
+  <div class="form-group">
+    <label for="mutation" class="col-md-2 control-label">Mutation Probability (%)</label>
+    <div class="col-md-1">
+      <input id="mutation" type="text" class="form-control" placeholder="10"
+             maxlength="3" size="3" ng-model="mutation_prob"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <button ng-click="play()" class="btn btn-default"><strong>Play</strong></button>
+      <button ng-click="reset()" class="btn btn-default"><strong>Reset</strong></button>
+    </div>
+  </div>
+
+</form>
