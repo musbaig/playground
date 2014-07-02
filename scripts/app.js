@@ -1,13 +1,13 @@
 'use strict';
 
-var app = angular.module('playground', ['ngRoute', 'playgroundControllers']);
+var rootApp = angular.module('playground', ['ngRoute', 'playgroundControllers']);
 
-app.config(['$routeProvider',
+rootApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
         when('/genetics', {
           templateUrl: 'views/genetic_algorithm.html',
-          controller: 'GeneticAlgorithmCtrl'
+          controller: 'GeneticAlgorithm'
         }).
         when('/clt', {
           templateUrl: 'views/clt.html',
@@ -16,6 +16,10 @@ app.config(['$routeProvider',
         when('/d3', {
           templateUrl: 'views/d3.html',
           controller: 'D3'
+        }).
+        when('/rxjs', {
+          templateUrl: 'views/rxjs.html',
+          controller: 'RxJS'
         }).
         otherwise({
           redirectTo: '/genetics'

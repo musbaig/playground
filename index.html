@@ -2,8 +2,10 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" charset="utf-8">
-  <meta http-equiv="Cache-Control" content="no-cache" />
-  <title>Sandbox for Algorithmic Explorations</title>
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playground for Web Tech Explorations</title>
 
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
@@ -40,10 +42,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2 well sidebar">
-        <ul ng-controller="navCtrl" class="nav nav-pills">
-          <li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>
-          <li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>
-          <li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>
+        <!--<nav-sidebar></nav-sidebar>-->
+        <ul ng-controller="Navigation" class="nav nav-pills">
+          <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
+            <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
+          </li>
+          <!--<li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>-->
+          <!--<li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>-->
+          <!--<li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>-->
         </ul>
       </div>
       <div ng-view class="col-md-10 col-md-offset-2 main"></div>
@@ -55,8 +61,9 @@
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <!--<script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>-->
-  <!--<script src="bower_components/lodash/dist/lodash.min.js"></script>-->
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
   <script src="bower_components/d3/d3.min.js"></script>
+  <script src="bower_components/rxjs/dist/rx.lite.min.js"></script>
   <!--<script src="bower_components/moment/min/moment.min.js"></script>-->
   <!--<script src="bower_components/crossfilter/crossfilter.min.js"></script>-->
   <!--<script src="bower_components/sparkline/dist/jquery.sparkline.min.js"></script>-->
@@ -65,7 +72,9 @@
   <!--<script src="bower_components/json3/lib/json3.min.js"></script>-->
 
   <script src="scripts/app.js"></script>
-  <script src="scripts/controllers.js"></script>
+  <script src="scripts/controllers/controllers.js"></script>
+  <script src="scripts/services/services.js"></script>
+  <script src="scripts/controllers/genome.js"></script>
 
 </body>
 </html>

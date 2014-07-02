@@ -2,21 +2,22 @@
 
 <form name="gaForm" class="form-horizonal" role="form">
 
-  <div class="form-group" ng-class="{'has-error': gaForm.phrase.$invalid && gaForm.phrase.$dirty}">
+  <div class="form-group" ng-class="{'has-error': gaForm.phrase.$dirty && gaForm.phrase.$invalid}">
     <label for="target" class="col-md-2 control-label">Target Phrase</label>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <input id="target" type="text" name="phrase" class="form-control" placeholder="METHINKS IT IS LIKE A WEASEL"
              maxlength="100" size="30" ng-model="target" required>
     </div>
-    <!--<span ng-show="gaForm.phrase.$error.required" class="help-inline">Required</span>-->
+    <!--<span ng-show="gaForm.phrase.$dirty && gaForm.phrase.$error.required">Required</span>-->
     <div class="clearfix"></div>
   </div>
 
-  <div class="form-group">
-    <label for="mutation" class="col-md-2 control-label">Mutation Probability (%)</label>
-    <div class="col-md-1">
-      <input id="mutation" type="number" class="form-control" placeholder="10"
-             maxlength="3" size="3" ng-model="mutation_prob" />
+  <div class="form-group" ng-class="{'has-error': gaForm.percent.$dirty && gaForm.percent.$invalid}">
+    <label for="mutation" class="col-md-2 control-label">Mutation Probability</label>
+    <div class="col-md-2 input-group">
+      <input id="mutation" type="number" name="percent" class="form-control" placeholder="10"
+             min="1" max="100" ng-model="mutation_prob">
+      <span class="input-group-addon">%</span>
     </div>
   </div>
 
@@ -27,4 +28,5 @@
     </div>
   </div>
 
+  <div class="help-block">{{ sample }}</div>
 </form>
