@@ -6,7 +6,7 @@
     <label for="target" class="col-md-2 control-label">Target Phrase</label>
     <div class="col-md-6">
       <input id="target" type="text" name="phrase" class="form-control" placeholder="METHINKS IT IS LIKE A WEASEL"
-             maxlength="100" size="30" ng-model="target" required>
+             maxlength="100" size="100" ng-model="target" required>
     </div>
     <!--<span ng-show="gaForm.phrase.$dirty && gaForm.phrase.$error.required">Required</span>-->
     <div class="clearfix"></div>
@@ -16,7 +16,7 @@
     <label for="mutation" class="col-md-2 control-label">Mutation Probability</label>
     <div class="col-md-2 input-group">
       <input id="mutation" type="number" name="percent" class="form-control" placeholder="10"
-             min="1" max="100" ng-model="mutation_prob">
+             min="1" max="100" ng-model="mutation">
       <span class="input-group-addon">%</span>
     </div>
   </div>
@@ -28,5 +28,6 @@
     </div>
   </div>
 
-  <div class="help-block">{{ sample }}</div>
 </form>
+
+<div ng-show="playing" class="well well-sm">{{ sample }}</div>

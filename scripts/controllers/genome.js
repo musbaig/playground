@@ -1,15 +1,13 @@
-function evolution($rootScope, target, mut_prob) {
+function evolution($rootScope, target, mutation_prob) {
 
-//  var TARGET = target.toUpperCase() || "METHINKS IT IS LIKE A WEASEL";
-  var TARGET = "METHINKS IT IS LIKE A WEASEL";
+  var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL";
   var ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ";
-//  var MUT_PROB = mut_prob ? parseInt(mut_prob) : 10;
-  var MUT_PROB = 10;
+  var MUT_PROB = mutation_prob ? parseInt(mutation_prob) : 10;
   var FITTEST = [];
 
   var generateGenome = function() {
     var genome = [];
-    for (var i = 0; i < 28; ++i) {
+    for (var i = 0; i < TARGET.length; ++i) {
       genome[i] = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
     }
     return genome.join("");
@@ -64,7 +62,7 @@ function evolution($rootScope, target, mut_prob) {
   var evolve = function() {
     var numGens = 0;
     var fittest = generateGenome();
-    while (getFitness(fittest) !== 28) {
+    while (getFitness(fittest) !== TARGET.length) {
       numGens++;
       var pool = getGenePool(fittest);
       var pool2 = [];

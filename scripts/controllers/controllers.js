@@ -12,30 +12,44 @@ playgroundControllers.controller('Navigation', ['$scope', '$location', 'navBarIt
   }
 ]);
 
-playgroundControllers.controller('GeneticAlgorithm', ['$scope', 'GeneticAlgorithm',
-  function geneticAlgorithmController($scope, GeneticAlgorithm) {
-    $scope.greet = "Genes baby!!";
-    $scope.sample = [];
+playgroundControllers.controller('GeneticAlgorithm', [
+  '$scope',
+  '$interval',
+  'GeneticAlgorithm',
+  function geneticAlgorithmController($scope, $interval, GeneticAlgorithm) {
 
-    var target = "",
-        mutation_prob = 0;
+    $scope.playing = false;
+
+    var samples = [],
+        playing;
 
     $scope.playGA = function() {
-      target = this.target;
-      mutation_prob = this.mutation_prob;
-      if (target && mutation_prob) {
-        GeneticAlgorithm.play(target, mutation_prob);
+      if (angular.isDefined(playing)) return;
+
+      $scope.playing = true;
+
+      GeneticAlgorithm.play($scope.target, $scope.mutation);
+//      if (target && mutation_prob) {
 //        $scope.target = $scope.mutation_prob = "";
-      }
+//      }
+
+      playing = $interval(function() {
+        if (samples.length > 0) {
+          $scope.sample = samples.shift();
+        } else {
+          $interval.cancel(playing);
+          playing = undefined;
+        }
+      }, 100);
     };
 
     $scope.resetParams = function() {
-      $scope.target = $scope.mutation_prob = "";
+      $scope.target = $scope.mutation = $scope.sample = "";
+      $scope.playing = false;
     };
 
     $scope.$on('SamplingEvent', function(event, args) {
-      $scope.sample.push(args);
-//      alert(args);
+      samples.push(args);
     });
   }
 ]);
@@ -57,12 +71,12 @@ playgroundControllers.controller('RxJS', ['$scope',
     $scope.greet = "Reactive Programming WTF!";
 
     var asimov = Rx.Observable.fromArray([
-        "Prelude to Foundation",
-        "Foundation",
-        "Second Foundation",
-        "Foundation and Empire",
-        "Foundations Edge",
-        "Foundation and Earth"
+      "Prelude to Foundation",
+      "Foundation",
+      "Second Foundation",
+      "Foundation and Empire",
+      "Foundations Edge",
+      "Foundation and Earth"
     ]);
 
     $scope.asimov = asimov.toArray();
