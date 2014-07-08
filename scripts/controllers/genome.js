@@ -1,34 +1,42 @@
 function evolution($rootScope, target, mutation_prob) {
 
-  var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL";
-  var ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ";
-  var MUT_PROB = mutation_prob ? parseInt(mutation_prob) : 10;
-  var FITTEST = [];
+  var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL",
+      ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ",
+      MUT_PROB = mutation_prob ? parseInt(mutation_prob) : 10,
+      FITTEST = [],
+      R = ramda;
 
   var generateGenome = function() {
-    var genome = [];
-    for (var i = 0; i < TARGET.length; ++i) {
-      genome[i] = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-    }
+//    var genome = [];
+//    for (var i = 0; i < TARGET.length; ++i) {
+//      genome[i] = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+//    }
+//    return genome.join("");
+    var genome = R.repeatN(ALPHABET[Math.floor(Math.random() * ALPHABET.length)], TARGET.length);
     return genome.join("");
   };
 
   var getFitness = function(genome) {
-    var fitness = 0;
-    for (var i = 0; i < TARGET.length; ++i) {
-      if (genome[i] === TARGET[i]) {
-        fitness++;
-      }
-    }
-    return fitness;
+//    var fitness = 0;
+//    for (var i = 0; i < TARGET.length; ++i) {
+//      if (genome[i] === TARGET[i]) {
+//        fitness++;
+//      }
+//    }
+//    return fitness;
+    var fitness = R.reduce.idx(function(accu, elem, idx) {
+      return elem === genome[idx] ? accu + 1 : accu;
+    }, 0, TARGET);
+    return fitness
   };
 
   var getGenePool = function(genome) {
-    var pool = [];
-    for (var i = 0; i < 50; ++i) {
-      pool[i] = genome;
-    }
-    return pool;
+//    var pool = [];
+//    for (var i = 0; i < 50; ++i) {
+//      pool[i] = genome;
+//    }
+//    return pool;
+    return R.repeatN(genome, 50);
   };
 
   var getFittest = function(pool) {
