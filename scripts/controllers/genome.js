@@ -16,6 +16,7 @@ function evolution($rootScope, target, mutation_prob) {
     return genome.join("");
   };
 
+  // Hamming distance
   var getFitness = function(genome) {
 //    var fitness = 0;
 //    for (var i = 0; i < TARGET.length; ++i) {

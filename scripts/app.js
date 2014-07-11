@@ -1,9 +1,9 @@
 'use strict';
 
-var rootApp = angular.module('playground', ['ngRoute', 'playgroundControllers']);
+var rootApp = angular.module('playground', ['ngRoute', 'playgroundControllers', 'playgroundDirectives']);
 
 rootApp.config(['$routeProvider',
-  function($routeProvider) {
+  function Router($routeProvider) {
     $routeProvider.
         when('/genetics', {
           templateUrl: 'views/genetic_algorithm.html',

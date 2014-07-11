@@ -1,6 +1,6 @@
 'use strict';
 
-var playgroundControllers = angular.module('playgroundControllers', ["playgroundServices"]);
+var playgroundControllers = angular.module('playgroundControllers', ['playgroundServices']);
 
 playgroundControllers.controller('Navigation', ['$scope', '$location', 'navBarItems',
   function navController($scope, $location, navBarItems) {
@@ -29,9 +29,6 @@ playgroundControllers.controller('GeneticAlgorithm', [
       $scope.playing = true;
 
       GeneticAlgorithm.play($scope.target, $scope.mutation);
-//      if (target && mutation_prob) {
-//        $scope.target = $scope.mutation_prob = "";
-//      }
 
       playing = $interval(function() {
         if (samples.length > 0) {
@@ -50,6 +47,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
     };
 
     $scope.resetGA = function() {
+      $scope.stopGA();
       $scope.target = $scope.mutation = $scope.sample = "";
       $scope.playing = false;
     };
@@ -69,6 +67,15 @@ playgroundControllers.controller('CLT', ['$scope',
 playgroundControllers.controller('D3', ['$scope',
   function d3Controller($scope) {
     $scope.greet = "Data driven documents";
+    $.ajax({
+      url: "views/rxjs.html",
+      type: 'GET',
+      dataType: 'html',
+      cache: false
+    })
+        .done(function(html) {
+          alert('done');
+        });
   }
 ]);
 

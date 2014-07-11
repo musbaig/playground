@@ -2,10 +2,14 @@
 
 var playgroundDirectives = angular.module('playgroundDirectives', []);
 
-playgroundDirectives.directive('navSidebar', [function navSidebar() {
+playgroundDirectives.directive('navSidebar', [function NavSidebarDirective() {
   return {
-    restrict: 'E',
     scope: {},
+    restrict: 'E',
+    replace: 'true',
+    controller: function(){
+      console.log('Hello Directive');
+    },
     template: '<h2>Hello Directive!</h2>'
   }
 }]);

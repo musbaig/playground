@@ -42,7 +42,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2 well sidebar">
-        <!--<nav-sidebar></nav-sidebar>-->
+        <nav-sidebar></nav-sidebar>
         <ul ng-controller="Navigation" class="nav nav-pills">
           <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
             <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
@@ -56,9 +56,9 @@
     </div>
   </div>
 
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-route/angular-route.min.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="bower_components/d3/d3.min.js"></script>
   <script src="bower_components/rxjs/dist/rx.lite.min.js"></script>
@@ -71,6 +71,7 @@
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers/controllers.js"></script>
   <script src="scripts/services/services.js"></script>
+  <script src="scripts/directives/directives.js"></script>
   <script src="scripts/controllers/genome.js"></script>
 
 </body>
