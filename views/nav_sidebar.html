@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-  <meta charset="UTF-8">
-  <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<ul class="nav nav-pills">
+  <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
+    <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
+  </li>
+  <!--<li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>-->
+  <!--<li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>-->
+  <!--<li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>-->
+</ul>

@@ -1,15 +1,19 @@
 'use strict';
 
-var playgroundDirectives = angular.module('playgroundDirectives', []);
+var playgroundDirectives = angular.module('playgroundDirectives', ['playgroundServices']);
 
 playgroundDirectives.directive('navSidebar', [function NavSidebarDirective() {
   return {
     scope: {},
     restrict: 'E',
     replace: 'true',
-    controller: function(){
-      console.log('Hello Directive');
+    controller: function($scope, $location, navBarItems){
+      $scope.navBarItems = navBarItems;
+      $scope.navClass = function(view) {
+        var currentRoute = $location.path().substring(1) || 'genetics';
+        return view === currentRoute ? 'active' : '';
+      };
     },
-    template: '<h2>Hello Directive!</h2>'
+    templateUrl: 'views/nav_sidebar.html'
   }
 }]);

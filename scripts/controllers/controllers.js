@@ -2,16 +2,6 @@
 
 var playgroundControllers = angular.module('playgroundControllers', ['playgroundServices']);
 
-playgroundControllers.controller('Navigation', ['$scope', '$location', 'navBarItems',
-  function navController($scope, $location, navBarItems) {
-    $scope.navBarItems = navBarItems;
-    $scope.navClass = function(view) {
-      var currentRoute = $location.path().substring(1) || 'genetics';
-      return view === currentRoute ? 'active' : '';
-    };
-  }
-]);
-
 playgroundControllers.controller('GeneticAlgorithm', [
   '$scope',
   '$interval',

@@ -43,14 +43,6 @@
     <div class="row">
       <div class="col-md-2 well sidebar">
         <nav-sidebar></nav-sidebar>
-        <ul ng-controller="Navigation" class="nav nav-pills">
-          <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
-            <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
-          </li>
-          <!--<li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>-->
-          <!--<li ng-class="navClass('clt')"><a href="#clt">Central Limit Theorem</a></li>-->
-          <!--<li ng-class="navClass('d3')"><a href="#d3">D3 Playground</a></li>-->
-        </ul>
       </div>
       <div ng-view class="col-md-10 col-md-offset-2 main"></div>
     </div>
