@@ -3,7 +3,7 @@ function evolution($rootScope, target, mutation_prob) {
   var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL",
       ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ",
       MUT_PROB = mutation_prob ? parseInt(mutation_prob) : 10,
-      FITTEST = [],
+//      FITTEST = [],
       R = ramda;
 
   var generateGenome = function() {
@@ -25,10 +25,9 @@ function evolution($rootScope, target, mutation_prob) {
 //      }
 //    }
 //    return fitness;
-    var fitness = R.reduce.idx(function(accu, elem, idx) {
+    return R.reduce.idx(function(accu, elem, idx) {
       return elem === genome[idx] ? accu + 1 : accu;
     }, 0, TARGET);
-    return fitness
   };
 
   var getGenePool = function(genome) {
@@ -79,8 +78,8 @@ function evolution($rootScope, target, mutation_prob) {
         pool2[i] = doMutation(pool[i]);
       }
       fittest = getFittest(pool2);
-      FITTEST.push(fittest);
-      if (numGens % 10 === 0) {
+//      FITTEST.push(fittest);
+      if (numGens % 10 === 0) { // TODO use random sampling
           $rootScope.$broadcast('SamplingEvent', fittest);
 //        console.log(fittest);
       }

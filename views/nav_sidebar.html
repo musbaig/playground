@@ -1,4 +1,4 @@
-<ul class="nav nav-pills">
+<ul class="nav nav-pills nav-stacked">
   <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
     <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
   </li>

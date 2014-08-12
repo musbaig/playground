@@ -26,7 +26,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
         } else {
           $scope.stopGA();
         }
-      }, 100);
+      }, 75);
     };
 
     $scope.stopGA = function() {
@@ -62,10 +62,9 @@ playgroundControllers.controller('D3', ['$scope',
       type: 'GET',
       dataType: 'html',
       cache: false
-    })
-        .done(function(html) {
-          alert('done');
-        });
+    }).done(function(html) {
+      console.log('done');
+    });
   }
 ]);
 
