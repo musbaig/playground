@@ -4,8 +4,12 @@ var R = ramda;
 
 var playgroundDirectives = angular.module('playgroundDirectives', ['playgroundServices']);
 
+var randomInt = function(max) {
+  return Math.floor((Math.random() * max) + 1);
+};
+
 playgroundDirectives.directive('navSidebar', [
-  function NavSidebarDirective(d3Service) {
+  function() {
     return {
       scope:       {},
       restrict:    'E',
@@ -35,8 +39,8 @@ function decorateSelection(selection, attr_map, style_map) {
   return selection;
 }
 
-playgroundDirectives.directive('sparkLine', ['d3Service',
-  function(d3Service) {
+playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
+  function(d3Service, $interval) {
     return {
       restrict: 'EA',
       link: function(scope, element, attrs) {
@@ -48,29 +52,27 @@ playgroundDirectives.directive('sparkLine', ['d3Service',
             { "x": 160, "y": 40, "height": 20, "width": 20, "color": "purple" },
             { "x": 70, "y": 70, "height": 20, "width": 20, "color": "red" }
           ];
-          var max_x = R.reduce(function(accum, elt) {
-            var elt_width = elt.x + elt.width;
-            return accum < elt_width ? elt_width : accum;
-          }, 0, jsonRectangles) + 20;
-          var max_y = R.reduce(function(accum, elt) {
-            var elt_height = elt.y + elt.height;
-            return accum < elt_height ? elt_height : accum;
-          }, 0, jsonRectangles) + 20;
+          var max_x = d3.max(jsonRectangles, function(d) {
+            return d.x + d.width;
+          }) + 20;
+          var max_y = d3.max(jsonRectangles, function(d) {
+            return d.y + d.height;
+          }) + 20;
           var svgContainer = d3.select(element[0])
-              .append('div')
-              .append('svg');
-          svgContainer = decorateSelection(svgContainer,
-              {'width': max_x,
-               'height': max_y},
-              {'border': '1px solid gray'});
-//              .attr('width', max_x)
-//              .attr('height', max_y)
-//              .style('border', '1px solid gray');
+                               .append('div')
+                               .append('svg')
+                               .attr('width', max_x)
+                               .attr('height', max_y)
+                               .style('border', '1px solid gray');
+//          svgContainer = decorateSelection(svgContainer,
+//              {'width': max_x,
+//               'height': max_y},
+//              {'border': '1px solid gray'});
           var rectangles = svgContainer.selectAll('rect')
-              .data(jsonRectangles)
-              .enter()
-              .append('rect');
-          var rectangleAttrs = rectangles
+                                       .data(jsonRectangles)
+                                       .enter()
+                                       .append('rect');
+          rectangles
               .attr('x', function(d) {
                 return d.x;
               })
@@ -89,105 +91,156 @@ playgroundDirectives.directive('sparkLine', ['d3Service',
 
           var padding = 30,
               w = 450,
-              h = 140;
-
-          var lineData = [
-            { "x": 1, "y": 5},
-            { "x": 20, "y": 20},
-            { "x": 40, "y": 10},
-            { "x": 60, "y": 40},
-            { "x": 80, "y": 5},
-            { "x": 100, "y": 60}
-          ];
+              h = 240,
+              numDataPoints = 10,
+              yRange = randomInt(100);
+          var lineData = R.times(function(n) {
+            return {"x": n,
+                    "y": Math.round(Math.random() * yRange)};
+          }, numDataPoints);
           var xScale = d3.scale.linear()
-              .domain([0, d3.max(lineData, function(d) { return d.x; })])
-              .range([0, 400]);
+                         .domain([0, d3.max(lineData, function(d) { return d.x; })])
+                         .range([0, 400]);
           var yScale = d3.scale.linear()
-              .domain([0, d3.max(lineData, function(d) { return d.y })])
-              .range([100, 0]);
+                         .domain([0, d3.max(lineData, function(d) { return d.y; })])
+                         .range([200, 0])
+                         .clamp(true);
           var lineFunction = d3.svg.line()
-              .x(function(d) {
-                return xScale(d.x);
-              })
-              .y(function(d) {
-                return yScale(d.y);
-              })
-              .interpolate('linear');
+                                   .x(function(d) { return xScale(d.x); })
+                                   .y(function(d) { return yScale(d.y); })
+                                   .interpolate('linear');
           var xAxis = d3.svg.axis()
-              .scale(xScale)
-              .orient('bottom')
-              .ticks(5);
+                        .scale(xScale)
+                        .orient('bottom')
+                        .ticks(5);
           var yAxis = d3.svg.axis()
-              .scale(yScale)
-              .orient('left')
-              .ticks(5);
+                        .scale(yScale)
+                        .orient('left')
+                        .ticks(5);
           svgContainer = d3.select(element[0])
-              .append('div')
-              .append('svg')
-              .attr('width', w)
-              .attr('height', h)
-              .style('border', '1px solid gray');
+                           .append('div')
+                           .append('svg')
+                           .attr('id', 'exp')
+                           .attr('width', w)
+                           .attr('height', h)
+                           .style('border', '1px solid gray');
+          svgContainer.append("clipPath")
+                      .attr("id", "chart-area")
+                      .append("rect")
+                      .attr("x", padding)
+                      .attr("y", 10)
+                      .attr("width", 400)
+                      .attr("height", 200);
           var xAxisGroup = svgContainer.append('g')
-              .attr('transform', 'translate(' + padding + ', ' + (h - padding) + ")")
-              .attr('fill', 'none')
-              .attr('stroke', 'black')
-              .style('shape-rendering', 'crispEdges')
-              .style('font-family', 'sans-serif')
-              .style('font-size', 12)
-              .call(xAxis);
+                                       .attr('class', 'x axis')
+                                       .attr('transform', 'translate(' + padding + ', ' + (h - (padding - 5)) + ")")
+                                       .call(xAxis);
           var yAxisGroup = svgContainer.append('g')
-              .attr('transform', 'translate(' + padding + ', ' + 10 + ")")
-              .attr('fill', 'none')
-              .attr('stroke', 'black')
-              .call(yAxis);
+                                       .attr('class', 'y axis')
+                                       .attr('transform', 'translate(' + padding + ', ' + 10 + ")")
+                                       .call(yAxis);
           var lineGraph = svgContainer.append('g')
-              .attr('transform', 'translate(' + padding + ', ' + 10 +')')
-              .append('path')
-              .attr('d', lineFunction(lineData))
-              .attr('stroke', 'blue')
-              .attr('stroke-width', 1)
-              .attr('fill', 'none');
+                                      .attr('transform', 'translate(' + padding + ', ' + 10 +')')
+                                      .attr("clip-path", "url(#chart-area")
+                                      .append('path')
+                                      .attr('d', lineFunction(lineData))
+                                      .attr('stroke', 'blue')
+                                      .attr('stroke-width', 2)
+                                      .attr('fill', 'none');
+          // click event trigger
+          d3.select("svg#exp")
+              .on("click",
+//          $interval(
+              function() {
+                var incrBy = 5;
+                numDataPoints += incrBy;
+                yRange = randomInt(100);
+                console.log("numDataPoints: " + numDataPoints);
+                lineData = R.concat(lineData,
+                    R.times(function(n) {
+                      return {"x": n + numDataPoints,
+                              "y": Math.round(Math.random() * yRange)};
+                    }, incrBy));
+                xScale.domain([0, d3.max(lineData, function(d) { return d.x; })]);
+                yScale.domain([0, d3.max(lineData, function(d) { return d.y; })]);
+                lineGraph
+                    .transition()
+                    .duration(250)
+                    .ease("linear")
+                    .attr('d', lineFunction(lineData))
+                    .attr('stroke', 'blue')
+                    .attr('stroke-width', 1)
+                    .attr('fill', 'none');
+//                    .each("start", function() {
+//                      d3.select(this)
+//                        .attr('stroke', 'magenta')
+//                        .attr('stroke-width', 5)
+//                        .attr('fill', 'none');
+//                    })
+//                    .each("end", function() {
+//                      d3.select(this)
+//                        .transition()
+//                        .duration(500)
+//                        .attr('stroke', 'blue')
+//                        .attr('stroke-width', 1)
+//                        .attr('fill', 'none');
+//                    });
+                xAxis.scale(xScale);
+                yAxis.scale(yScale);
+                xAxisGroup
+                    .transition()
+                    .duration(250)
+                    .ease("linear")
+                    .attr('class', 'x axis')
+                    .call(xAxis);
+                yAxisGroup
+                    .transition()
+                    .duration(250)
+                    .ease("linear")
+                    .attr('class', 'y axis')
+                    .call(yAxis);
+              });
 
-          var logScale = d3.scale.log()
-              .domain([1, 10000])
-              .range([0, 10]);
+//          var logScale = d3.scale.log()
+//              .domain([1, 10000])
+//              .range([0, 10]);
+//
+//          $("svg:last").after("<div>" + [1, 1000, 3000, 2000, 5000, 4000, 7000, 6000, 9000, 8000, 10000]
+//              .map(function(n) {
+//                return Math.round(logScale(n) * 100) / 100;
+//              }).toString() + "</div>");
 
-          $("svg:last").after("<div>" + [1, 1000, 3000, 2000, 5000, 4000, 7000, 6000, 9000, 8000, 10000]
-              .map(function(n) {
-                return Math.round(logScale(n) * 100) / 100;
-              }).toString() + "</div>");
-
-          var circleData = [
-            { "cx": 20, "cy": 20, "radius": 20, "color": "green" },
-            { "cx": 70, "cy": 70, "radius": 20, "color": "purple" }
-          ];
-          svgContainer = d3.select(element[0])
-              .append('div')
-              .append('svg')
-              .attr('width', 200)
-              .attr('height', 200)
-              .style('border', '1px solid gray');
-          var circles = svgContainer.selectAll('circle')
-              .data(circleData)
-              .enter()
-              .append('circle');
-          var circleAttrs = circles
-              .attr("cx", function (d) { return d.cx; })
-              .attr("cy", function (d) { return d.cy; })
-              .attr("r", function (d) { return d.radius; })
-              .style("fill", function (d) { return d.color; });
-          var text = svgContainer.selectAll('text')
-              .data(circleData)
-              .enter()
-              .append('text');
-          var textAttrs = text
-              .attr('x', function(d) { return d.cx; })
-              .attr('y', function(d) { return d.cy; })
-              .text(function(d) { return "HELLO!"; })
-              .attr('font-family', 'sans-serif')
-              .attr('text-anchor', 'middle')
-              .attr('font-size', '20px')
-              .attr('fill', 'red');
+//          var circleData = [
+//            { "cx": 20, "cy": 20, "radius": 20, "color": "green" },
+//            { "cx": 70, "cy": 70, "radius": 20, "color": "purple" }
+//          ];
+//          svgContainer = d3.select(element[0])
+//              .append('div')
+//              .append('svg')
+//              .attr('width', 200)
+//              .attr('height', 200)
+//              .style('border', '1px solid gray');
+//          var circles = svgContainer.selectAll('circle')
+//              .data(circleData)
+//              .enter()
+//              .append('circle');
+//          var circleAttrs = circles
+//              .attr("cx", function (d) { return d.cx; })
+//              .attr("cy", function (d) { return d.cy; })
+//              .attr("r", function (d) { return d.radius; })
+//              .style("fill", function (d) { return d.color; });
+//          var text = svgContainer.selectAll('text')
+//              .data(circleData)
+//              .enter()
+//              .append('text');
+//          var textAttrs = text
+//              .attr('x', function(d) { return d.cx; })
+//              .attr('y', function(d) { return d.cy; })
+//              .text(function(d) { return "HELLO!"; })
+//              .attr('font-family', 'sans-serif')
+//              .attr('text-anchor', 'middle')
+//              .attr('font-size', '20px')
+//              .attr('fill', 'red');
 
 //          var jsonCircles = [
 //            {
@@ -251,13 +304,6 @@ playgroundDirectives.directive('sparkLine', ['d3Service',
 //                        return 'red';
 //                    }
 //                  });
-
-//          var svg = d3.select(element[0])
-//                      .selectAll('p')
-//                      .data(theData)
-//                      .enter()
-//                      .append('p')
-//                      .text(function(d){return d;});
 
           $(window).resize(function() {
             scope.$apply();
