@@ -3,10 +3,16 @@
     padding-left: 15px;
 }
 
+.line {
+    fill: none;
+    stroke: blue;
+    stroke-width: 1px;
+}
+
 .axis path, .axis line {
     fill: none;
     stroke: black;
-    shape-rendering:crispEdges;
+    shape-rendering: crispEdges;
 }
 
 .axis text {

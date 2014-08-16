@@ -143,10 +143,8 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
                                       .attr('transform', 'translate(' + padding + ', ' + 10 +')')
                                       .attr("clip-path", "url(#chart-area")
                                       .append('path')
-                                      .attr('d', lineFunction(lineData))
-                                      .attr('stroke', 'blue')
-                                      .attr('stroke-width', 2)
-                                      .attr('fill', 'none');
+                                      .attr('class', 'line')
+                                      .attr('d', lineFunction(lineData));
           // click event trigger
           d3.select("svg#exp")
               .on("click",
@@ -161,6 +159,9 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
                       return {"x": n + numDataPoints,
                               "y": Math.round(Math.random() * yRange)};
                     }, incrBy));
+                lineGraph
+                    .attr("d", lineFunction(lineData))
+                    .attr("class", "line");
                 xScale.domain([0, d3.max(lineData, function(d) { return d.x; })]);
                 yScale.domain([0, d3.max(lineData, function(d) { return d.y; })]);
                 lineGraph
@@ -168,9 +169,7 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
                     .duration(250)
                     .ease("linear")
                     .attr('d', lineFunction(lineData))
-                    .attr('stroke', 'blue')
-                    .attr('stroke-width', 1)
-                    .attr('fill', 'none');
+                    .attr('class', 'line');
 //                    .each("start", function() {
 //                      d3.select(this)
 //                        .attr('stroke', 'magenta')
