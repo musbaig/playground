@@ -89,101 +89,151 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
                 return d.color;
               });
 
-          var padding = 30,
-              w = 450,
-              h = 240,
+          // SVG setup
+          var padding = {'bottom': 60, 'left': 60, 'top': 10},
+              svgWidth = 510,
+              svgHeight = 270,
               numDataPoints = 10,
               yRange = randomInt(100);
-          var lineData = R.times(function(n) {
-            return {"x": n,
+          // Dynamic, random data set
+          var scatterData = R.times(function(n) {
+            return {"x": n + 1 ,
                     "y": Math.round(Math.random() * yRange)};
           }, numDataPoints);
+          // Create scale functions
           var xScale = d3.scale.linear()
-                         .domain([0, d3.max(lineData, function(d) { return d.x; })])
-                         .range([0, 400]);
+                               .domain([1, d3.max(scatterData, function(d) { return d.x; })])
+                               .range([5 + padding.left, 400 + padding.left]);
           var yScale = d3.scale.linear()
-                         .domain([0, d3.max(lineData, function(d) { return d.y; })])
-                         .range([200, 0])
-                         .clamp(true);
-          var lineFunction = d3.svg.line()
-                                   .x(function(d) { return xScale(d.x); })
-                                   .y(function(d) { return yScale(d.y); })
-                                   .interpolate('linear');
+                               .domain([0, d3.max(scatterData, function(d) { return d.y; })])
+                               .range([200 + padding.top, padding.top])
+                               .clamp(true);
+//          var lineFunction = d3.svg.line()
+//                                   .x(function(d) { return xScale(d.x); })
+//                                   .y(function(d) { return yScale(d.y); })
+//                                   .interpolate('linear');
+          // Define X axis
           var xAxis = d3.svg.axis()
-                        .scale(xScale)
-                        .orient('bottom')
-                        .ticks(5);
+                            .scale(xScale)
+                            .orient('bottom')
+                            .ticks(5);
+          // Define Y axis
           var yAxis = d3.svg.axis()
-                        .scale(yScale)
-                        .orient('left')
-                        .ticks(5);
+                            .scale(yScale)
+                            .orient('left')
+                            .ticks(5);
+          // Create svg element/container
           svgContainer = d3.select(element[0])
                            .append('div')
                            .append('svg')
                            .attr('id', 'exp')
-                           .attr('width', w)
-                           .attr('height', h)
+                           .attr('width', svgWidth)
+                           .attr('height', svgHeight)
                            .style('border', '1px solid gray');
+          // Create clip-path
           svgContainer.append("clipPath")
                       .attr("id", "chart-area")
                       .append("rect")
-                      .attr("x", padding)
-                      .attr("y", 10)
-                      .attr("width", 400)
+                      .attr("x", padding.left)
+                      .attr("y", padding.top)
+                      .attr("width", 430)
                       .attr("height", 200);
+          // Create scatter plot circle points
+          svgContainer.selectAll('circle')
+                                    .data(scatterData)
+                                    .enter()
+                                    .append('circle')
+                                    .attr('cx', function(d) { return xScale(d.x); })
+                                    .attr('cy', function(d) { return yScale(d.y); })
+                                    .attr('r', 2)
+                                    .attr('fill', 'blue');
+          // Add X axis
           var xAxisGroup = svgContainer.append('g')
                                        .attr('class', 'x axis')
-                                       .attr('transform', 'translate(' + padding + ', ' + (h - (padding - 5)) + ")")
+                                       .attr('transform', 'translate(' + 0 + ', ' + (svgHeight - (padding.bottom - 5)) + ")")
                                        .call(xAxis);
+          // Label X axis
+          svgContainer.append('text')
+                      .attr('transform', 'translate(' + (svgWidth / 2) + ', ' + (svgHeight - 20) + ')')
+                      .attr('class', 'text')
+                      .style('text-anchor', 'middle')
+                      .text('Data Points');
+          // Add Y axis
           var yAxisGroup = svgContainer.append('g')
                                        .attr('class', 'y axis')
-                                       .attr('transform', 'translate(' + padding + ', ' + 10 + ")")
+                                       .attr('transform', 'translate(' + padding.left + ', ' + (padding.top - 10) + ")")
                                        .call(yAxis);
-          var lineGraph = svgContainer.append('g')
-                                      .attr('transform', 'translate(' + padding + ', ' + 10 +')')
-                                      .attr("clip-path", "url(#chart-area")
-                                      .append('path')
-                                      .attr('class', 'line')
-                                      .attr('d', lineFunction(lineData));
+          // Label Y axis
+          svgContainer.append('text')
+              .attr('transform', 'rotate(-90)')
+              .style('text-anchor', 'middle')
+              .attr('y', padding.left / 2)
+              .attr('x', 0 - ((svgHeight - padding.top) / 2))
+              .style('text-anchor', 'middle')
+              .text('Value');
+//          var lineGraph = svgContainer.append('g')
+//                                      .attr('transform', 'translate(' + padding.left + ', ' + padding.top +')')
+//                                      .attr("clip-path", "url(#chart-area")
+//                                      .append('path')
+//                                      .attr('class', 'line')
+//                                      .attr('d', lineFunction(lineData));
           // click event trigger
           d3.select("svg#exp")
               .on("click",
 //          $interval(
               function() {
-                var incrBy = 5;
+                var incrBy = 1;
                 numDataPoints += incrBy;
                 yRange = randomInt(100);
-                console.log("numDataPoints: " + numDataPoints);
-                lineData = R.concat(lineData,
+//                console.log("numDataPoints: " + numDataPoints);
+                scatterData = R.concat(scatterData,
                     R.times(function(n) {
                       return {"x": n + numDataPoints,
                               "y": Math.round(Math.random() * yRange)};
                     }, incrBy));
-                lineGraph
-                    .attr("d", lineFunction(lineData))
-                    .attr("class", "line");
-                xScale.domain([0, d3.max(lineData, function(d) { return d.x; })]);
-                yScale.domain([0, d3.max(lineData, function(d) { return d.y; })]);
-                lineGraph
-                    .transition()
-                    .duration(250)
-                    .ease("linear")
-                    .attr('d', lineFunction(lineData))
-                    .attr('class', 'line');
-//                    .each("start", function() {
-//                      d3.select(this)
-//                        .attr('stroke', 'magenta')
-//                        .attr('stroke-width', 5)
-//                        .attr('fill', 'none');
-//                    })
-//                    .each("end", function() {
-//                      d3.select(this)
-//                        .transition()
-//                        .duration(500)
-//                        .attr('stroke', 'blue')
-//                        .attr('stroke-width', 1)
-//                        .attr('fill', 'none');
-//                    });
+//                lineGraph
+//                    .attr("d", lineFunction(scatterData))
+//                    .attr("class", "line");
+                var circles = svgContainer.selectAll('circle')
+                                          .data(scatterData);
+
+                circles.enter()
+                       .append('circle')
+                       .attr('cx', function(d) { return xScale(d.x); })
+                       .attr('cy', function(d) { return yScale(d.y); })
+                       .attr('r', 4)
+                       .attr('fill', 'gray')
+                       .attr('opacity', 0.1);
+                xScale.domain([1, d3.max(scatterData, function(d) { return d.x; })]);
+                yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
+                circles.transition()
+                       .duration(250)
+                       .ease('linear')
+                       .attr('cx', function(d) { return xScale(d.x); })
+                       .attr('cy', function(d) { return yScale(d.y); })
+                       .attr('r', 2)
+                       .attr('fill', 'blue')
+                       .attr('opacity', 1.0);
+//                lineGraph
+//                    .transition()
+//                    .duration(250)
+//                    .ease("linear")
+//                    .attr('d', lineFunction(scatterData))
+//                    .attr('class', 'line');
+////                    .each("start", function() {
+////                      d3.select(this)
+////                        .attr('stroke', 'magenta')
+////                        .attr('stroke-width', 5)
+////                        .attr('fill', 'none');
+////                    })
+////                    .each("end", function() {
+////                      d3.select(this)
+////                        .transition()
+////                        .duration(500)
+////                        .attr('stroke', 'blue')
+////                        .attr('stroke-width', 1)
+////                        .attr('fill', 'none');
+////                    });
                 xAxis.scale(xScale);
                 yAxis.scale(yScale);
                 xAxisGroup
