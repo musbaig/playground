@@ -68,9 +68,10 @@ function evolution($rootScope, target, mutation_prob) {
   };
 
   var evolve = function() {
-    var numGens = 0;
+    var numGens = 0,
+        tl = TARGET.length;
     var fittest = generateGenome();
-    while (getFitness(fittest) !== TARGET.length) {
+    while (getFitness(fittest) !== tl) {
       numGens++;
       var pool = getGenePool(fittest);
       var pool2 = [];
@@ -78,13 +79,16 @@ function evolution($rootScope, target, mutation_prob) {
         pool2[i] = doMutation(pool[i]);
       }
       fittest = getFittest(pool2);
+      var sample = {"fittest": fittest,
+                    "hamming": (getFitness(fittest) / tl) * 100,
+                    "numGens": numGens};
 //      FITTEST.push(fittest);
       if (numGens % 10 === 0) { // TODO use random sampling
-          $rootScope.$broadcast('SamplingEvent', fittest);
+          $rootScope.$broadcast('SamplingEvent', sample);
 //        console.log(fittest);
       }
     }
-    $rootScope.$broadcast('SamplingEvent', fittest);
+    $rootScope.$broadcast('SamplingEvent', sample);
 //    console.log("numGens = " + numGens);
 //    return {"fittest": fittest,
 //      "numGens": numGens};

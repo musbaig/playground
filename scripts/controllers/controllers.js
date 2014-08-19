@@ -9,8 +9,9 @@ playgroundControllers.controller('GeneticAlgorithm', [
   function geneticAlgorithmController($scope, $interval, GeneticAlgorithm) {
 
     $scope.playing = false;
+    $scope.samples = [];
 
-    var samples = [],
+    var sample_queue = [],
         playing;
 
     $scope.playGA = function() {
@@ -21,8 +22,10 @@ playgroundControllers.controller('GeneticAlgorithm', [
       GeneticAlgorithm.play($scope.target, $scope.mutation);
 
       playing = $interval(function() {
-        if (samples.length > 0) {
-          $scope.sample = samples.shift();
+        if (sample_queue.length > 0) {
+          var sample = sample_queue.shift();
+          $scope.sample = sample.fittest;
+          $scope.samples.push(sample);
         } else {
           $scope.stopGA();
         }
@@ -39,11 +42,12 @@ playgroundControllers.controller('GeneticAlgorithm', [
     $scope.resetGA = function() {
       $scope.stopGA();
       $scope.target = $scope.mutation = $scope.sample = "";
+      $scope.samples = [];
       $scope.playing = false;
     };
 
     $scope.$on('SamplingEvent', function(event, args) {
-      samples.push(args);
+      sample_queue.push(args);
     });
   }
 ]);

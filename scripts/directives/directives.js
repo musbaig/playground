@@ -42,7 +42,7 @@ function decorateSelection(selection, attr_map, style_map) {
 playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
   function(d3Service, $interval) {
     return {
-      restrict: 'EA',
+      restrict: 'E',
       link: function(scope, element, attrs) {
 
         d3Service.d3().then(function(d3) {
@@ -166,9 +166,10 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
           // Label Y axis
           svgContainer.append('text')
               .attr('transform', 'rotate(-90)')
+              .attr('class', 'text')
               .style('text-anchor', 'middle')
               .attr('y', padding.left / 2)
-              .attr('x', 0 - ((svgHeight - padding.top) / 2))
+              .attr('x', 0 - ((svgHeight / 2) - 25))
               .style('text-anchor', 'middle')
               .text('Value');
 //          var lineGraph = svgContainer.append('g')
@@ -363,24 +364,6 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
           }, function() {
             console.log("Window resized to: " + $(window).width());
           });
-        });
-      }
-    }
-  }
-]);
-
-playgroundDirectives.directive('barChart', ['d3Service',
-  function(d3Service) {
-    return {
-      restrict: 'E',
-      link: function(scope, element, attrs) {
-        d3Service.d3().then(function(d3) {
-
-          var R = ramda;
-
-          var data = R.times(function(n) {
-            return Math.round(Math.random() * 100);
-          }, 50);
         });
       }
     }
