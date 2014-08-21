@@ -17,6 +17,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
     $scope.playGA = function() {
       if (angular.isDefined(playing)) return;
 
+      $scope.samples = [];
       $scope.playing = true;
 
       GeneticAlgorithm.play($scope.target, $scope.mutation);

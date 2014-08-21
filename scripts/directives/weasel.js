@@ -22,14 +22,14 @@ angular.module('playgroundDirectives')
               .domain([1, d3.max(scatterData, function(d) { return d.x; })])
               .range([5 + padding.left, 400 + padding.left]);
           var yScale = d3.scale.linear()
-              .domain([0, d3.max(scatterData, function(d) { return d.y; })])
+              .domain([0, 100])//d3.max(scatterData, function(d) { return d.y; })])
               .range([200 + padding.top, padding.top])
               .clamp(true);
           // Define X axis
           var xAxis = d3.svg.axis()
               .scale(xScale)
               .orient('bottom')
-              .ticks(5);
+              .ticks(7);
           // Define Y axis
           var yAxis = d3.svg.axis()
               .scale(yScale)
@@ -40,8 +40,8 @@ angular.module('playgroundDirectives')
               .append('svg')
               .attr('id', 'exp')
               .attr('width', svgWidth)
-              .attr('height', svgHeight)
-              .style('border', '1px solid gray');
+              .attr('height', svgHeight);
+//              .style('border', '1px solid gray');
           // Create clip-path
           svgContainer.append("clipPath")
               .attr("id", "chart-area")
@@ -69,7 +69,7 @@ angular.module('playgroundDirectives')
               .attr('transform', 'translate(' + (svgWidth / 2) + ', ' + (svgHeight - 20) + ')')
               .attr('class', 'text')
               .style('text-anchor', 'middle')
-              .text('Sample');
+              .text('Sample (x10)');
           // Add Y axis
           var yAxisGroup = svgContainer.append('g')
               .attr('class', 'y axis')
@@ -80,47 +80,52 @@ angular.module('playgroundDirectives')
               .attr('transform', 'rotate(-90)')
               .style('class', 'text')
               .attr('y', padding.left / 2)
-              .attr('x', 0 - ((svgHeight + padding.top) / 2))
+              .attr('x', 0 - ((svgHeight - 50) / 2))
               .style('text-anchor', 'middle')
               .text('Fitness (%)');
           // click event trigger
           scope.$watch("data",
               function(value) {
                 scatterData = value;
-                var circles = svgContainer.selectAll('circle')
-                    .data(scatterData);
 
-                circles.enter()
-                    .append('circle')
-                    .attr('cx', function(d) { return xScale(d.x); })
-                    .attr('cy', function(d) { return yScale(d.y); })
-                    .attr('r', 4)
-                    .attr('fill', 'gray')
-                    .attr('opacity', 0.1);
-                xScale.domain([1, d3.max(scatterData, function(d) { return d.x; })]);
-                yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
-                circles.transition()
-                    .duration(75)
-                    .ease('linear')
-                    .attr('cx', function(d) { return xScale(d.x); })
-                    .attr('cy', function(d) { return yScale(d.y); })
-                    .attr('r', 2)
-                    .attr('fill', 'blue')
-                    .attr('opacity', 1.0);
-                xAxis.scale(xScale);
-                yAxis.scale(yScale);
-                xAxisGroup
-                    .transition()
-                    .duration(75)
-                    .ease("linear")
-                    .attr('class', 'x axis')
-                    .call(xAxis);
-                yAxisGroup
-                    .transition()
-                    .duration(75)
-                    .ease("linear")
-                    .attr('class', 'y axis')
-                    .call(yAxis);
+                if(scatterData.length === 0) {
+                  svgContainer.selectAll('circle').remove();
+                } else {
+                  var circles = svgContainer.selectAll('circle')
+                      .data(scatterData);
+
+                  circles.enter()
+                      .append('circle')
+                      .attr('cx', function(d) { return xScale(d.x); })
+                      .attr('cy', function(d) { return yScale(d.y); })
+                      .attr('r', 4)
+                      .attr('fill', 'gray')
+                      .attr('opacity', 0.1);
+                  xScale.domain([1, d3.max(scatterData, function(d) { return d.x; })]);
+//                yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
+                  circles.transition()
+                      .duration(75)
+                      .ease('linear')
+                      .attr('cx', function(d) { return xScale(d.x); })
+                      .attr('cy', function(d) { return yScale(d.y); })
+                      .attr('r', 2)
+                      .attr('fill', 'blue')
+                      .attr('opacity', 1.0);
+                  xAxis.scale(xScale);
+//                yAxis.scale(yScale);
+                  xAxisGroup
+                      .transition()
+                      .duration(75)
+                      .ease("linear")
+                      .attr('class', 'x axis')
+                      .call(xAxis);
+//                yAxisGroup
+//                    .transition()
+//                    .duration(75)
+//                    .ease("linear")
+//                    .attr('class', 'y axis')
+//                    .call(yAxis);
+                }
               }, true);
 
           $(window).resize(function() {
