@@ -24,8 +24,9 @@ playgroundControllers.controller('GeneticAlgorithm', [
       playing = $interval(function() {
         if (sample_queue.length > 0) {
           var sample = sample_queue.shift();
+          $scope.samples.push({"x": (sample.numGens) / 10,
+                               "y": sample.hamming});
           $scope.sample = sample.fittest;
-          $scope.samples.push(sample);
         } else {
           $scope.stopGA();
         }

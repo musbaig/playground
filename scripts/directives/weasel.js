@@ -6,7 +6,7 @@ angular.module('playgroundDirectives')
     return {
       restrict: 'E',
       replace: 'true',
-      scope: { samples: '=' },
+      scope: { data: '=' },
       link: function(scope, element, attrs) {
 
         d3Service.d3().then(function(d3) {
@@ -84,11 +84,9 @@ angular.module('playgroundDirectives')
               .style('text-anchor', 'middle')
               .text('Fitness (%)');
           // click event trigger
-          scope.$on('SamplingEvent',
-//          $interval(
-              function(event, args) {
-                scatterData.push({"x": scatterData.length + 1,
-                                  "y": args.hamming});
+          scope.$watch("data",
+              function(value) {
+                scatterData = value;
                 var circles = svgContainer.selectAll('circle')
                     .data(scatterData);
 
@@ -102,7 +100,6 @@ angular.module('playgroundDirectives')
                 xScale.domain([1, d3.max(scatterData, function(d) { return d.x; })]);
                 yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
                 circles.transition()
-                    .delay(function(d, i) { return i * 75; })
                     .duration(75)
                     .ease('linear')
                     .attr('cx', function(d) { return xScale(d.x); })
@@ -114,19 +111,17 @@ angular.module('playgroundDirectives')
                 yAxis.scale(yScale);
                 xAxisGroup
                     .transition()
-                    .delay(function(d, i) { return i * 75; })
                     .duration(75)
                     .ease("linear")
                     .attr('class', 'x axis')
                     .call(xAxis);
                 yAxisGroup
                     .transition()
-                    .delay(function(d, i) { return i * 75; })
                     .duration(75)
                     .ease("linear")
                     .attr('class', 'y axis')
                     .call(yAxis);
-              });
+              }, true);
 
           $(window).resize(function() {
             scope.$apply();
