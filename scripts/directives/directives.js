@@ -14,11 +14,11 @@ playgroundDirectives.directive('navSidebar', [
       scope:       {},
       restrict:    'E',
       replace:     'true',
-      controller:  ['$scope', '$location' , 'navBarItems',
-        function($scope, $location, navBarItems) {
-          $scope.navBarItems = navBarItems;
+      controller:  ['$scope', '$location' , 'navBarValues',
+        function($scope, $location, navBarValues) {
+          $scope.navBarItems = navBarValues;
           $scope.navClass = function(view) {
-            var currentRoute = $location.path().substring(1) || navBarItems[0].view;
+            var currentRoute = $location.path().substring(1) || navBarValues[0].view;
             return view === currentRoute ? 'active' : '';
           };
         }],
@@ -251,46 +251,14 @@ playgroundDirectives.directive('sparkLine', ['d3Service', '$interval',
                     .call(yAxis);
               });
 
-//          var logScale = d3.scale.log()
-//              .domain([1, 10000])
-//              .range([0, 10]);
-//
-//          $("svg:last").after("<div>" + [1, 1000, 3000, 2000, 5000, 4000, 7000, 6000, 9000, 8000, 10000]
-//              .map(function(n) {
-//                return Math.round(logScale(n) * 100) / 100;
-//              }).toString() + "</div>");
+          var logScale = d3.scale.log()
+              .domain([1, 10000])
+              .range([0, 10]);
 
-//          var circleData = [
-//            { "cx": 20, "cy": 20, "radius": 20, "color": "green" },
-//            { "cx": 70, "cy": 70, "radius": 20, "color": "purple" }
-//          ];
-//          svgContainer = d3.select(element[0])
-//              .append('div')
-//              .append('svg')
-//              .attr('width', 200)
-//              .attr('height', 200)
-//              .style('border', '1px solid gray');
-//          var circles = svgContainer.selectAll('circle')
-//              .data(circleData)
-//              .enter()
-//              .append('circle');
-//          var circleAttrs = circles
-//              .attr("cx", function (d) { return d.cx; })
-//              .attr("cy", function (d) { return d.cy; })
-//              .attr("r", function (d) { return d.radius; })
-//              .style("fill", function (d) { return d.color; });
-//          var text = svgContainer.selectAll('text')
-//              .data(circleData)
-//              .enter()
-//              .append('text');
-//          var textAttrs = text
-//              .attr('x', function(d) { return d.cx; })
-//              .attr('y', function(d) { return d.cy; })
-//              .text(function(d) { return "HELLO!"; })
-//              .attr('font-family', 'sans-serif')
-//              .attr('text-anchor', 'middle')
-//              .attr('font-size', '20px')
-//              .attr('fill', 'red');
+          $("svg:last").after("<div>" + [1, 1000, 3000, 2000, 5000, 4000, 7000, 6000, 9000, 8000, 10000]
+              .map(function(n) {
+                return Math.round(logScale(n) * 100) / 100;
+              }).toString() + "</div>");
 
 //          var jsonCircles = [
 //            {

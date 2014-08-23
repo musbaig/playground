@@ -24,3 +24,7 @@
     font-family: sans-serif;
     font-size: 11px;
 }
+
+.well {
+    background: lightgreen;
+}

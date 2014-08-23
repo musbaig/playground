@@ -12,19 +12,21 @@ angular.module('playgroundDirectives')
         d3Service.d3().then(function(d3) {
 
           // SVG setup
-          var padding = {"bottom": 60, "left": 60, "top": 10},
-              svgWidth = 510,
-              svgHeight = 270;
-          // Dynamic, random data set
+          var padding = {"bottom": 60, "left": 60, "top": 30, "right": 30},
+              width = 500,
+              height = 300,
+              max_X = 400,
+              max_Y = 200,
+              axisGap = 5;
+          // Data set
           var scatterData = [];
           // Create scale functions
           var xScale = d3.scale.linear()
-              .domain([1, d3.max(scatterData, function(d) { return d.x; })])
-              .range([5 + padding.left, 400 + padding.left]);
+              .domain([1, 2])
+              .range([padding.left, max_X + padding.left]);
           var yScale = d3.scale.linear()
-              .domain([0, 100])//d3.max(scatterData, function(d) { return d.y; })])
-              .range([200 + padding.top, padding.top])
-              .clamp(true);
+              .domain([0, 100])
+              .range([max_Y + padding.top, padding.top]);
           // Define X axis
           var xAxis = d3.svg.axis()
               .scale(xScale)
@@ -36,51 +38,50 @@ angular.module('playgroundDirectives')
               .orient('left')
               .ticks(5);
           // Create svg element/container
-          var svgContainer = d3.select(element[0])
+          var svg = d3.select(element[0])
               .append('svg')
-              .attr('id', 'exp')
-              .attr('width', svgWidth)
-              .attr('height', svgHeight);
+              .attr('width', width)
+              .attr('height', height);
 //              .style('border', '1px solid gray');
           // Create clip-path
-          svgContainer.append("clipPath")
+          svg.append("clipPath")
               .attr("id", "chart-area")
               .append("rect")
               .attr("x", padding.left)
               .attr("y", padding.top)
-              .attr("width", 430)
-              .attr("height", 200);
+              .attr("width", max_X + padding.right) // for staging entering data points
+              .attr("height", max_Y);
           // Create scatter plot circle points
-          svgContainer.selectAll('circle')
-              .data(scatterData)
-              .enter()
-              .append('circle')
-              .attr('cx', function(d) { return xScale(d.x); })
-              .attr('cy', function(d) { return yScale(d.y); })
-              .attr('r', 2)
-              .attr('fill', 'blue');
+//          svg.selectAll('circle')
+//              .data(scatterData)
+//              .enter()
+//              .append('circle')
+//              .attr('cx', function(d) { return xScale(d.x); })
+//              .attr('cy', function(d) { return yScale(d.y); })
+//              .attr('r', 2)
+//              .attr('fill', 'blue');
           // Add X axis
-          var xAxisGroup = svgContainer.append('g')
+          var xAxisGroup = svg.append('g')
               .attr('class', 'x axis')
-              .attr('transform', 'translate(' + 0 + ', ' + (svgHeight - (padding.bottom - 5)) + ")")
+              .attr('transform', 'translate(' + 0 + ', ' + (max_Y + padding.top + axisGap) + ")")
               .call(xAxis);
           // Label X axis
-          svgContainer.append('text')
-              .attr('transform', 'translate(' + (svgWidth / 2) + ', ' + (svgHeight - 20) + ')')
+          svg.append('text')
               .attr('class', 'text')
+              .attr('transform', 'translate(' + ((max_X / 2) + padding.left) + ', ' + (max_Y + padding.bottom + 10) + ')')
               .style('text-anchor', 'middle')
-              .text('Sample (x10)');
+              .text('Generations (x10)');
           // Add Y axis
-          var yAxisGroup = svgContainer.append('g')
+          var yAxisGroup = svg.append('g')
               .attr('class', 'y axis')
-              .attr('transform', 'translate(' + padding.left + ', ' + (padding.top - 10) + ")")
+              .attr('transform', 'translate(' + (padding.left - axisGap) + ', ' + 0 + ")")
               .call(yAxis);
           // Label Y axis
-          svgContainer.append('text')
+          svg.append('text')
               .attr('transform', 'rotate(-90)')
-              .style('class', 'text')
-              .attr('y', padding.left / 2)
-              .attr('x', 0 - ((svgHeight - 50) / 2))
+              .attr('class', 'text')
+              .attr('y', (padding.left / 2) - 5)
+              .attr('x', 0 - (padding.top + (max_Y / 2)))
               .style('text-anchor', 'middle')
               .text('Fitness (%)');
           // click event trigger
@@ -89,9 +90,9 @@ angular.module('playgroundDirectives')
                 scatterData = value;
 
                 if(scatterData.length === 0) {
-                  svgContainer.selectAll('circle').remove();
+                  svg.selectAll('circle').remove();
                 } else {
-                  var circles = svgContainer.selectAll('circle')
+                  var circles = svg.selectAll('circle')
                       .data(scatterData);
 
                   circles.enter()
@@ -105,6 +106,7 @@ angular.module('playgroundDirectives')
 //                yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
                   circles.transition()
                       .duration(75)
+                      .delay(150)
                       .ease('linear')
                       .attr('cx', function(d) { return xScale(d.x); })
                       .attr('cy', function(d) { return yScale(d.y); })

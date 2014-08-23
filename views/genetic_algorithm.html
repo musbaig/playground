@@ -1,4 +1,4 @@
-<h4 class="page-header">Dawkins' Weasel Experiment</h4>
+<h4 class="page-header">Dawkins' <a href="http://en.wikipedia.org/wiki/Weasel_program" target="_blank">Weasel</a> Experiment</h4>
 
 <form name="gaForm" class="form-horizontal" role="form">
 <fieldset>
@@ -25,15 +25,15 @@
   <!-- Play/reset buttons -->
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-      <button ng-click="playGA()" class="btn btn-success"><strong>Play</strong></button>
-      <button ng-click="resetGA()" class="btn btn-danger"><strong>Reset</strong></button>
+      <button ng-click="playGA()" class="btn btn-success"><span class="glyphicon glyphicon-play"></span> <strong>Play</strong></button>
+      <button ng-click="resetGA()" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> <strong>Reset</strong></button>
     </div>
   </div>
 
 </fieldset>
 </form>
 
-<div ng-show="playing" class="well well-sm">{{ sample }}</div>
+<div ng-show="playing" class="alert" ng-class="{'alert-warning': complete === '', 'alert-success': complete}">{{ sample }}<span class="pull-right badge">{{ complete }}</span></div>
 
 <weasel ng-show="playing" data="samples"></weasel>
 <!--<weasel data="samples"></weasel>-->

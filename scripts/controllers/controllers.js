@@ -19,6 +19,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
 
       $scope.samples = [];
       $scope.playing = true;
+      $scope.complete = "";
 
       GeneticAlgorithm.play($scope.target, $scope.mutation);
 
@@ -29,6 +30,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
                                "y": sample.hamming});
           $scope.sample = sample.fittest;
         } else {
+          $scope.complete = "Success!";
           $scope.stopGA();
         }
       }, 75);
@@ -43,7 +45,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
 
     $scope.resetGA = function() {
       $scope.stopGA();
-      $scope.target = $scope.mutation = $scope.sample = "";
+      $scope.target = $scope.mutation = $scope.sample = $scope.complete = "";
       $scope.samples = [];
       $scope.playing = false;
     };

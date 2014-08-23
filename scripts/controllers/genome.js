@@ -3,7 +3,6 @@ function evolution($rootScope, target, mutation_prob) {
   var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL",
       ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ",
       MUT_PROB = mutation_prob ? parseInt(mutation_prob) : 10,
-//      FITTEST = [],
       R = ramda;
 
   var generateGenome = function() {
@@ -16,7 +15,7 @@ function evolution($rootScope, target, mutation_prob) {
     return genome.join("");
   };
 
-  // Hamming distance
+  // Fitness (cost) function: uses Hamming distance
   var getFitness = function(genome) {
 //    var fitness = 0;
 //    for (var i = 0; i < TARGET.length; ++i) {
@@ -82,16 +81,11 @@ function evolution($rootScope, target, mutation_prob) {
       var sample = {"fittest": fittest,
                     "hamming": (getFitness(fittest) / tl) * 100,
                     "numGens": numGens};
-//      FITTEST.push(fittest);
       if (numGens % 10 === 0) { // TODO use random sampling
           $rootScope.$broadcast('SamplingEvent', sample);
-//        console.log(fittest);
       }
     }
     $rootScope.$broadcast('SamplingEvent', sample);
-//    console.log("numGens = " + numGens);
-//    return {"fittest": fittest,
-//      "numGens": numGens};
   };
 
   evolve();
