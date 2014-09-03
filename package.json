@@ -1,0 +1,11 @@
+{
+  "name": "playground",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "gulp": "^3.8.7"
+  },
+  "dependencies": {
+    "hapi": "^6.7.1"
+  }
+}
