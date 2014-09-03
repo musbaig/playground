@@ -10,6 +10,11 @@ playgroundControllers.controller('GeneticAlgorithm', [
 
     $scope.playing = false;
     $scope.samples = [];
+//    $scope.animationSpeed = 75;
+
+//    $scope.$watch('animationSpeed', function(newValue) {
+//      $scope.animationSpeed = newValue;
+//    });
 
     var sample_queue = [],
         playing;
@@ -33,7 +38,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
           $scope.complete = "Success!";
           $scope.stopGA();
         }
-      }, 75);
+      }, $scope.animationSpeed);
     };
 
     $scope.stopGA = function() {

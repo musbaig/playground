@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('playgroundDirectives')
-    .directive('weasel', ['d3Service',
+var playgroundDirectives = angular.module('playgroundDirectives');
+
+playgroundDirectives.directive('weasel', ['d3Service',
   function(d3Service) {
     return {
       restrict: 'E',
@@ -102,11 +103,11 @@ angular.module('playgroundDirectives')
                       .attr('r', 4)
                       .attr('fill', 'gray')
                       .attr('opacity', 0.1);
-                  xScale.domain([1, d3.max(scatterData, function(d) { return d.x; })]);
+                  xScale.domain(d3.extent(scatterData, function(d) { return d.x; }));
 //                yScale.domain([0, d3.max(scatterData, function(d) { return d.y; })]);
                   circles.transition()
-                      .duration(75)
-                      .delay(150)
+//                      .duration(75)
+//                      .delay(150)
                       .ease('linear')
                       .attr('cx', function(d) { return xScale(d.x); })
                       .attr('cy', function(d) { return yScale(d.y); })
@@ -117,7 +118,7 @@ angular.module('playgroundDirectives')
 //                yAxis.scale(yScale);
                   xAxisGroup
                       .transition()
-                      .duration(75)
+//                      .duration(75)
                       .ease("linear")
                       .attr('class', 'x axis')
                       .call(xAxis);

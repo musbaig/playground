@@ -3,7 +3,7 @@
 var playgroundServices = angular.module('playgroundServices', []);
 
 playgroundServices.value('navBarValues', [
-  {view: "genetics", title: "Dawkins' Weasel Exp", active: true},
+  {view: "genetics", title: "Dawkins' Weasel (SVG)", active: true},
   {view: "clt", title: "Central Limit Theorem", active: true},
   {view: "d3", title: "D3 Playground", active: true},
   {view: "rxjs", title: "RxJS Playground", active: true}

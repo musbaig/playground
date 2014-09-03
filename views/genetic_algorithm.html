@@ -1,4 +1,4 @@
-<h4 class="page-header">Dawkins' <a href="http://en.wikipedia.org/wiki/Weasel_program" target="_blank">Weasel</a> Experiment</h4>
+<h4 class="page-header">Dawkins' <a href="http://en.wikipedia.org/wiki/Weasel_program" target="_blank">Weasel</a> Experiment (SVG)</h4>
 
 <form name="gaForm" class="form-horizontal" role="form">
 <fieldset>
@@ -19,6 +19,14 @@
     <div class="col-md-2 input-group">
       <input id="mutation" type="number" name="percent" class="form-control" placeholder="10" min="2" max="100" maxlength="3" size="3" ng-model="mutation">
       <span class="input-group-addon">%</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-2 control-label">Animation Speed</label>
+    <div class="col-md-4 input-group">
+      <input id="animation" type="range" name="speed" class="form-control" min="5" max="200" step="5" value="75" ng-model="animationSpeed">
+      <span class="input-group-addon"> {{ animationSpeed }} msec</span>
     </div>
   </div>
 
