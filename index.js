@@ -1,7 +1,7 @@
 var Path = require('path');
 var Hapi = require('hapi');
 
-var PORT = process.env.PORT || 8000;
+var PORT = process.env.PORT || 8899;
 
 var serverOptions = {
   debug: { request: ['error'] },

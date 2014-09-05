@@ -6,6 +6,8 @@
     "gulp": "^3.8.7"
   },
   "dependencies": {
-    "hapi": "^6.7.1"
+    "hapi": "^6.7.1",
+    "ramda": "^0.4.3",
+    "superagent": "^0.18.2"
   }
 }

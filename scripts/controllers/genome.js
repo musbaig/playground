@@ -1,4 +1,4 @@
-function evolution($rootScope, target, mutation_prob) {
+function evolution(scope, target, mutation_prob) {
 
   var TARGET = target ? target.toUpperCase() : "METHINKS IT IS LIKE A WEASEL",
       ALPHABET = "ABCDEFGHIJKLMONPQRSTUVWXYZ ",
@@ -39,14 +39,18 @@ function evolution($rootScope, target, mutation_prob) {
   };
 
   var getFittest = function(pool) {
-    var fittestLoc = 0;
-    var fittest = 0;
-    for (var i = 0; i < pool.length; ++i) {
-      if (getFitness(pool[i]) > fittest) {
-        fittest = getFitness(pool[i]);
-        fittestLoc = i;
-      }
-    }
+//    var fittestLoc = 0;
+//    var fittest = 0;
+//    for (var i = 0; i < pool.length; ++i) {
+//      if (getFitness(pool[i]) > fittest) {
+//        fittest = getFitness(pool[i]);
+//        fittestLoc = i;
+//      }
+//    }
+    var fittest = R.reduce(function(fittest, candidate) {
+      var fitness = getFitness(candidate);
+      return fitness > fittest ? fitness : fittest;
+    }, 0, pool);
     return pool[fittest];
   };
 
@@ -73,19 +77,23 @@ function evolution($rootScope, target, mutation_prob) {
     while (getFitness(fittest) !== tl) {
       numGens++;
       var pool = getGenePool(fittest);
-      var pool2 = [];
-      for (var i = 0; i < pool.length; ++i) {
-        pool2[i] = doMutation(pool[i]);
-      }
+//      var pool2 = [];
+//      for (var i = 0; i < pool.length; ++i) {
+//        pool2[i] = doMutation(pool[i]);
+//      }
+      var pool2 = R.reduce(function(pool2, elt) {
+        pool2.push(doMutation(elt));
+        return pool2;
+      }, [], pool);
       fittest = getFittest(pool2);
       var sample = {"fittest": fittest,
                     "hamming": (getFitness(fittest) / tl) * 100,
                     "numGens": numGens};
       if (numGens % 10 === 0) { // TODO use random sampling
-          $rootScope.$broadcast('SamplingEvent', sample);
+          scope.$broadcast('SamplingEvent', sample);
       }
     }
-    $rootScope.$broadcast('SamplingEvent', sample);
+    scope.$broadcast('SamplingEvent', sample);
   };
 
   evolve();

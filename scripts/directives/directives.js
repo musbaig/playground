@@ -11,7 +11,6 @@ var randomInt = function(max) {
 playgroundDirectives.directive('navSidebar', [
   function() {
     return {
-      scope:       {},
       restrict:    'E',
       replace:     'true',
       controller:  ['$scope', '$location' , 'navBarValues',

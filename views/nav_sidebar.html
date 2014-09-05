@@ -1,5 +1,5 @@
 <ul class="nav nav-pills nav-stacked">
-  <li ng-repeat="navItem in navBarItems | filter:{active: true}" ng-class="navClass(navItem.view)">
+  <li ng-repeat="navItem in navBarItems | filter:{active: true} | filter:query " ng-class="navClass(navItem.view)">
     <a ng-href="#{{ navItem.view }}">{{ navItem.title }}</a>
   </li>
   <!--<li ng-class="navClass('genetics')"><a href="#genetics">Basic Genetic Algorithm</a></li>-->
