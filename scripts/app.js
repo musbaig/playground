@@ -18,8 +18,8 @@ rootApp.config(['$routeProvider',
           controller: 'D3'
         }).
         when('/rxjs', {
-          templateUrl: 'views/rxjs.html',
-          controller: 'RxJS'
+          templateUrl: 'views/trie.html',
+          controller: 'Trie'
         }).
         otherwise({
           redirectTo: '/genetics'

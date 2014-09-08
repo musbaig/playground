@@ -73,7 +73,7 @@ Trie.prototype.hasWord = function(word) {
 };
 
 Trie.prototype.autocomplete = function(prefix) {
-  if (!prefix && prefix.length == 0) {
+  if (!prefix || prefix.length == 0) {
     return [];
   }
   var trie = this.root,

@@ -81,9 +81,9 @@ playgroundControllers.controller('D3', ['$scope',
   }
 ]);
 
-playgroundControllers.controller('RxJS', ['$scope',
-  function rxjsController($scope) {
-    $scope.greet = "Reactive Programming WTF!";
+playgroundControllers.controller('Trie', ['$scope',
+  function trieController($scope) {
+    $scope.greet = "Trie WTF!";
 
 //    var asimov = Rx.Observable.fromArray([
 //      "Prelude to Foundation",
@@ -96,11 +96,24 @@ playgroundControllers.controller('RxJS', ['$scope',
 //
 //    $scope.asimov = asimov.toArray();
 
-    var R = ramda;
-    var evens = [2,2,4,4,5];
-    var data = [1,2,3,4,5];
-    $scope.ramdar = R.reduce.idx(function(acc, y, idx) {
-      return y === evens[idx] ? acc + 1 : acc;
-    }, 0, data);
+//    var R = ramda;
+//    var evens = [2,2,4,4,5];
+//    var data = [1,2,3,4,5];
+//    $scope.ramdar = R.reduce.idx(function(acc, y, idx) {
+//      return y === evens[idx] ? acc + 1 : acc;
+//    }, 0, data);
+
+    var dictionary = new Trie();
+    dictionary.multi_insert(['foo', 'fou', 'bar', 'bars', 'bear']);
+    $scope.$watch('keyword', function(newValue, oldValue) {
+      var results = dictionary.autocomplete(newValue);
+      if(results.length != 0) {
+        $scope.results = results;
+      } else {
+        if (newValue == "") { // TODO add word undefined hint for user
+          $scope.results = "";
+        }
+      }
+    });
   }
 ]);
