@@ -1,3 +1,11 @@
 <h4 class="page-header">RxJS</h4>
 
-<div>{{ ramdar }}</div>
+<div id="ram">{{ ramdar }}</div>
+
+<script>
+  var test_trie = new Trie();
+  test_trie.multi_insert(['foo', 'fou', 'bar', 'bars', 'bear']);
+  $("#ram").after($("<div id=\"trie\"><pre>" + JSON.stringify(test_trie.root, null, 2) + "</pre></div>"));
+  $("#trie").after($("<div id=\"has\"><pre>trie has the word 'bart': " + test_trie.hasWord("bart") + "</pre></div>"));
+  $("#has").after($("<div id=\"auto\"><pre>" + test_trie.autocomplete("b") + "</pre></div>"));
+</script>
