@@ -3,7 +3,7 @@ var fs = require('fs'),
     Trie = require('../scripts/trie');
 
 exports.init = function() {
-  fs.readFile('./resources/TWL06.txt', {encoding: 'utf8', flag: 'r'},
+  fs.readFile('./resources/words.txt', {encoding: 'utf8', flag: 'r'},
       function(err, data) {
         if (err) throw err;
         var words = data.split('\r\n');
