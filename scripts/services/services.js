@@ -1,15 +1,15 @@
 'use strict';
 
-var playgroundServices = angular.module('playgroundServices', []);
+var playgroundServices = angular.module('playgroundServices', ['ngResource']);
 
 playgroundServices.value('navBarValues', [
   {view: "genetics", title: "Dawkins' Weasel (SVG)", active: true},
   {view: "clt", title: "Central Limit Theorem", active: true},
   {view: "d3", title: "D3 Playground", active: true},
-  {view: "trie", title: "Trie Playground", active: true}
+  {view: "trie", title: "Autocomplete Demo", active: true}
 ]);
 
-playgroundServices.service('GeneticAlgorithm', ['$rootScope', '$interval',
+playgroundServices.service('GeneticAlgorithmService', ['$rootScope', '$interval',
   function GeneticAlgorithmService($rootScope, $interval) {
     this.play = function(target, mutation_prob) {
       evolution($rootScope, target, mutation_prob);
@@ -48,10 +48,8 @@ playgroundServices.factory('d3Service', ['$document', '$q', '$rootScope',
     }
 ]);
 
-playgroundServices.service('RandomIntsGenerator', [
-  function() {
-    this.generateNRandomInts = function(N, n) {
-
-    };
+playgroundServices.factory('DictionaryService', ['$resource',
+  function($resource) {
+    return $resource('trie/:prefix', {size: 5});
   }
 ]);

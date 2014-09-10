@@ -1,5 +1,6 @@
-var Path = require('path');
-var Hapi = require('hapi');
+var Hapi = require('hapi'),
+    routes = require('./routes'),
+    dictionary = require('./server_scripts/dictionary');
 
 var PORT = process.env.PORT || 8899;
 
@@ -10,38 +11,11 @@ var serverOptions = {
 
 var server = new Hapi.Server('localhost', PORT, serverOptions);
 
-//server.route({
-//  method: 'GET',
-//  path: '/playground/views/{path*}',
-//  handler: {
-//    directory: {
-//      path: './views',
-//      listing: false,
-//      index: false
-//    }
-//  }
-//});
+server.route(routes);
 
-server.route({
-  method: 'GET',
-  path: '/playground/{path*}',
-  handler: {
-    directory: {
-      path: './',
-      listing: false,
-      index: false
-    }
-  }
-});
-
-server.route({
-  method: 'GET',
-  path: '/playground/index.html',
-  handler: {
-    file: 'index.html'
-  }
-});
-
-server.start(function() {
+function init() {
+  dictionary.init();
   console.log("Server running at: " + server.info.uri);
-});
+}
+
+server.start(init());

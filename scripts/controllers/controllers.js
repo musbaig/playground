@@ -5,8 +5,8 @@ var playgroundControllers = angular.module('playgroundControllers', ['playground
 playgroundControllers.controller('GeneticAlgorithm', [
   '$scope',
   '$interval',
-  'GeneticAlgorithm',
-  function geneticAlgorithmController($scope, $interval, GeneticAlgorithm) {
+  'GeneticAlgorithmService',
+  function geneticAlgorithmController($scope, $interval, GeneticAlgorithmService) {
 
     $scope.playing = false;
     $scope.samples = [];
@@ -26,7 +26,7 @@ playgroundControllers.controller('GeneticAlgorithm', [
       $scope.playing = true;
       $scope.complete = "";
 
-      GeneticAlgorithm.play($scope.target, $scope.mutation);
+      GeneticAlgorithmService.play($scope.target, $scope.mutation);
 
       playing = $interval(function() {
         if (sample_queue.length > 0) {
@@ -81,8 +81,8 @@ playgroundControllers.controller('D3', ['$scope',
   }
 ]);
 
-playgroundControllers.controller('Trie', ['$scope',
-  function trieController($scope) {
+playgroundControllers.controller('Trie', ['$scope', 'DictionaryService',
+  function trieController($scope, DictionaryService) {
     $scope.greet = "Trie WTF!";
 
 //    var asimov = Rx.Observable.fromArray([
@@ -96,23 +96,19 @@ playgroundControllers.controller('Trie', ['$scope',
 //
 //    $scope.asimov = asimov.toArray();
 
-//    var R = ramda;
-//    var evens = [2,2,4,4,5];
-//    var data = [1,2,3,4,5];
-//    $scope.ramdar = R.reduce.idx(function(acc, y, idx) {
-//      return y === evens[idx] ? acc + 1 : acc;
-//    }, 0, data);
-
-    var dictionary = new Trie();
-    dictionary.multi_insert(['foo', 'fou', 'bar', 'bars', 'bear']);
     $scope.$watch('keyword', function(newValue, oldValue) {
-      var results = dictionary.autocomplete(newValue);
-      if(results.length != 0) {
-        $scope.results = results;
+
+      if(newValue === oldValue || newValue === "") {
+        $scope.results = "";
       } else {
-        if (newValue == "") { // TODO add word undefined hint for user
-          $scope.results = "";
-        }
+        var results = DictionaryService.query({prefix: newValue}, function() {
+          if(results.length != 0) {
+            $scope.results = results;
+          } else {
+            // TODO add word undefined hint for user
+            $scope.results = "";
+          }
+        });
       }
     });
   }

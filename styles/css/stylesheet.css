@@ -28,3 +28,19 @@
 .well {
     background: lightgreen;
 }
+
+.node circle {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.link {
+    fill:none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}

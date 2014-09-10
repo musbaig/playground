@@ -17,7 +17,7 @@ rootApp.config(['$routeProvider',
           templateUrl: 'views/d3.html',
           controller: 'D3'
         }).
-        when('/rxjs', {
+        when('/trie', {
           templateUrl: 'views/trie.html',
           controller: 'Trie'
         }).

@@ -1,5 +1,6 @@
 'use strict';
 
+// yucky non-FP first attempt
 //function generateTrie(words) {
 //  var trie = {};
 //  words.forEach(function(word) {
@@ -22,6 +23,8 @@
 var Trie = function() {
   this.root = {};
 };
+
+module.exports = new Trie();
 
 Trie.prototype.validate = function(word) {
   if((word === undefined) || (word === null)) {
@@ -72,7 +75,7 @@ Trie.prototype.hasWord = function(word) {
   return trie.$ === 1;
 };
 
-Trie.prototype.autocomplete = function(prefix) {
+Trie.prototype.autocomplete = function(prefix, size) {
   if (!prefix || prefix.length == 0) {
     return [];
   }
@@ -88,18 +91,21 @@ Trie.prototype.autocomplete = function(prefix) {
     }
   }
 
-  function trieWords(curTrie, word, words) {
+  function trieWords(curTrie, word, words, size) {
     for(var letter in curTrie) {
+      if(words.length === size) break;
       if(letter == "$") {
         words.push(word);
       } else {
-        trieWords(curTrie[letter], word + letter, words);
+        trieWords(curTrie[letter], word + letter, words, size);
       }
     }
 
     return words;
   }
-  var words = trieWords(trie, "", []);
+
+  var size = size || 10;
+  var words = trieWords(trie, "", [], size);
 
   return words.map(function(elt) {
     return prefix + elt;
