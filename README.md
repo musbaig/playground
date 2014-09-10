@@ -7,12 +7,12 @@ To start playing with the examples I'm working on, you'll need node, npm and bow
 
 ```bash
 $> npm install
-$> bower install
+$> bower update
 $> node index.js
 
-;=> Server running at: http://localhost:8000
+;=> Server running at: http://localhost:8899
 ```
 
-and navigate to [playground](http://localhost:8000/playground/index.html)
+and navigate to [playground](http://localhost:8899/playground/index.html)
 
 Let me know if something is broken or needs a serious rewrite.
