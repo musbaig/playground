@@ -70,14 +70,6 @@ playgroundControllers.controller('CLT', ['$scope',
 playgroundControllers.controller('D3', ['$scope',
   function d3Controller($scope) {
     $scope.greet = "Data driven documents";
-    $.ajax({
-      url: "views/rxjs.html",
-      type: 'GET',
-      dataType: 'html',
-      cache: false
-    }).done(function(html) {
-      console.log('done');
-    });
   }
 ]);
 
