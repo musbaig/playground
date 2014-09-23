@@ -1,8 +1,12 @@
 <h4 class="page-header">Autocomplete Demo (via Trie)</h4>
 
-<div>
-  <label for="lookup">Lookup: </label>
-  <input style="" id="lookup" type="text" ng-model="keyword">
+<div class="form-group row">
+  <label for="size" class="col-sm-2 control-label">Size of resultset: </label>
+  <input style="" id="size" type="text" ng-model="size" class="col-sm-1" placeholder="5" maxlength="100">
+</div>
+<div class="form-group row">
+  <label for="lookup" class="col-sm-2 control-label">Lookup: </label>
+  <input style="" id="lookup" type="text" ng-model="keyword" ng-keyup="lookup($event, keyword)" class="col-sm-2">
 </div>
 <div>
   <p></p>

@@ -38,6 +38,8 @@ Trie.prototype.validate = function(word) {
 Trie.prototype.insert = function(word) {
   this.validate(word);
 
+  if(this.hasWord(word)) return;
+
   var trie = this.root;
   trie = word.split("").reduce(function(currentTrie, letter) {
     if (!(letter in currentTrie)) {
@@ -46,7 +48,7 @@ Trie.prototype.insert = function(word) {
     return currentTrie[letter]; // return obj associated with that letter
   }, trie);
 
-//  trie.$ = (trie.$ || 0) + 1; // TODO potentially counts num of inserts of same word
+//  trie.$ = (trie.$ || 0) + 1; // TODO potentially count num of inserts of same word
   trie.$ = 1;
 };
 

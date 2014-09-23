@@ -6,7 +6,9 @@ playgroundServices.value('navBarValues', [
   {view: "genetics", title: "Dawkins' Weasel (SVG)", active: true},
   {view: "clt", title: "Central Limit Theorem", active: true},
   {view: "d3", title: "D3 Playground", active: true},
-  {view: "trie", title: "Autocomplete Demo", active: true}
+  {view: "trie", title: "Autocomplete Demo", active: true},
+  {view: "Bayes", title: "Bayes Networks", active: false},
+  {view: "Famo.us", title: "Famo.us Demo", active: false}
 ]);
 
 playgroundServices.service('GeneticAlgorithmService', ['$rootScope', '$interval',
@@ -50,6 +52,7 @@ playgroundServices.factory('d3Service', ['$document', '$q', '$rootScope',
 
 playgroundServices.factory('DictionaryService', ['$resource',
   function($resource) {
-    return $resource('trie/:prefix', {size: 5});
+    return $resource('trie/:prefix', {size: 5},
+        {lookup: {method: 'GET', params: {size: '@size'}, isArray: true}});
   }
 ]);

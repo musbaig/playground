@@ -75,7 +75,7 @@ playgroundControllers.controller('D3', ['$scope',
 
 playgroundControllers.controller('Trie', ['$scope', 'DictionaryService',
   function trieController($scope, DictionaryService) {
-    $scope.greet = "Trie WTF!";
+    $scope.greet = "Trie FTW!";
 
 //    var asimov = Rx.Observable.fromArray([
 //      "Prelude to Foundation",
@@ -88,20 +88,26 @@ playgroundControllers.controller('Trie', ['$scope', 'DictionaryService',
 //
 //    $scope.asimov = asimov.toArray();
 
-    $scope.$watch('keyword', function(newValue, oldValue) {
-
+    $scope.$watch('size', function(newValue, oldValue) {
       if(newValue === oldValue || newValue === "") {
-        $scope.results = "";
-      } else {
-        var results = DictionaryService.query({prefix: newValue}, function() {
+        $scope.size = newValue;
+      }
+      if($scope.keyword) {
+        $scope.lookup(null, $scope.keyword);
+      }
+    });
+
+    $scope.lookup = function(event, prefix) {
+      DictionaryService.lookup({prefix: prefix, size: $scope.size},
+        function(results) {
           if(results.length != 0) {
             $scope.results = results;
           } else {
             // TODO add word undefined hint for user
             $scope.results = "";
           }
-        });
-      }
-    });
+        }
+      );
+    };
   }
 ]);
