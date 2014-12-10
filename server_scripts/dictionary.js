@@ -10,6 +10,7 @@ exports.init = function() {
         Trie.multi_insert(words.map(function(elt) {
           return elt.toLowerCase();
         }));
+        console.log(Trie);
       }
   );
 };

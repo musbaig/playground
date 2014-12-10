@@ -67,11 +67,20 @@ playgroundControllers.controller('CLT', ['$scope',
   }
 ]);
 
-playgroundControllers.controller('D3', ['$scope',
-  function d3Controller($scope) {
+playgroundControllers.controller('D3',
+  function d3Controller($scope, $interval, $http) {
     $scope.greet = "Data driven documents";
+    function getLocalWeather(zipCode) {
+      $http.get('https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid = 2487889&format=json&env=store://datatables.org%2Falltableswithkeys')
+          .success(function(data, status) {
+            $scope.local = data.query.results.channel.item.condition;
+          })
+          .error(function(data, status) {
+          });
+    }
+    $interval(getLocalWeather() , 1000 * 60 * 60);
   }
-]);
+);
 
 playgroundControllers.controller('Trie', ['$scope', 'DictionaryService',
   function trieController($scope, DictionaryService) {
